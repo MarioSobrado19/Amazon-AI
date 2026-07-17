@@ -1,6 +1,6 @@
 from products import cargar_productos
 from calculator import calcular_rentabilidad
-
+from report import generar_reporte
 products = cargar_productos()
 products.sort(
     key=lambda x: calcular_rentabilidad(
@@ -14,7 +14,7 @@ products.sort(
 print("=" * 60)
 print("🚀 AMAZON SCOUT AI")
 print("=" * 60)
-
+resultados = []
 for producto in products:
 
     resultado = calcular_rentabilidad(
@@ -22,6 +22,8 @@ for producto in products:
         producto["costo"],
         producto["precio"]
     )
+
+    resultados.append(resultado)
 
     if resultado["ganancia"] > 0:
 
@@ -46,3 +48,7 @@ for producto in products:
             print("❌ NO RECOMENDADO")
 
         print()
+
+generar_reporte(resultados)
+
+print("✅ Reporte guardado en reports/mejores_productos.txt")
