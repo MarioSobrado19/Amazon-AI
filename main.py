@@ -2,6 +2,14 @@ from products import cargar_productos
 from calculator import calcular_rentabilidad
 
 products = cargar_productos()
+products.sort(
+    key=lambda x: calcular_rentabilidad(
+        x["nombre"],
+        x["costo"],
+        x["precio"],
+    )["roi"],
+    reverse=True
+)
 
 print("=" * 60)
 print("🚀 AMAZON SCOUT AI")
