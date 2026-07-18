@@ -1,6 +1,7 @@
 import unittest
 
 from filters import filtrar_productos
+from scout import analizar_productos
 
 
 PRODUCTOS = [
@@ -66,6 +67,28 @@ class ProductFilterTests(unittest.TestCase):
         filtrar_productos(PRODUCTOS, roi_minimo=150)
 
         self.assertEqual(PRODUCTOS, copia_original)
+
+    def test_scout_aplica_filtros_despues_del_analisis(self):
+        productos_sin_analizar = [
+            {"nombre": "Organizador de cocina", "costo": 8, "precio": 29.99},
+            {"nombre": "Soporte para laptop", "costo": 18, "precio": 44.99},
+        ]
+
+        resultados = analizar_productos(
+            productos_sin_analizar,
+            roi_minimo=150,
+            margen_minimo=40,
+            ganancia_minima=10,
+            precio_maximo=30,
+            texto_nombre="COCINA",
+        )
+
+        self.assertEqual(
+            [producto["nombre"] for producto in resultados],
+            ["Organizador de cocina"],
+        )
+        self.assertIn("roi", resultados[0])
+        self.assertIn("evaluacion", resultados[0])
 
 
 if __name__ == "__main__":
