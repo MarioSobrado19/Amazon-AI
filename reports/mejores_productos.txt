@@ -1,35 +1,43 @@
 🚀 AMAZON SCOUT AI
 ========================================
 
-#1 Organizador de cocina
+#1 Tapete para escritorio
+ROI: 224.8%
+Ganancia: $8.99
+Evaluación: EXCELENTE PRODUCTO
+
+#2 Organizador de cables
+ROI: 219.7%
+Ganancia: $6.59
+Evaluación: EXCELENTE PRODUCTO
+
+#3 Organizador de cocina
 ROI: 168.6%
 Ganancia: $13.49
+Evaluación: EXCELENTE PRODUCTO
 
-#2 Luz LED para escritorio
+#4 Luz LED para escritorio
 ROI: 156.6%
 Ganancia: $23.49
-
-#3 Botella deportiva
-ROI: 134.0%
-Ganancia: $14.74
-
-#4 Soporte para laptop
-ROI: 90.2%
-Ganancia: $16.24
+Evaluación: EXCELENTE PRODUCTO
 
 #5 Cargador USB-C
-ROI: -84.5%
-Ganancia: $-33.79
+ROI: 149.9%
+Ganancia: $17.99
+Evaluación: BUEN PRODUCTO
 
 #6 Mouse inalámbrico
-ROI: -92.2%
-Ganancia: $-23.04
+ROI: 146.3%
+Ganancia: $10.24
+Evaluación: BUEN PRODUCTO
 
-#7 Tapete para escritorio
-ROI: -103.0%
-Ganancia: $-20.59
+#7 Botella deportiva
+ROI: 134.0%
+Ganancia: $14.74
+Evaluación: BUEN PRODUCTO
 
-#8 Organizador de cables
-ROI: -109.1%
-Ganancia: $-17.44
+#8 Soporte para laptop
+ROI: 90.2%
+Ganancia: $16.24
+Evaluación: REGULAR
 

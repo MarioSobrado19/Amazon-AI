@@ -1,8 +1,11 @@
 import csv
 
+from config import REPORTS_DIR
+
 
 def exportar_csv(productos):
-    ruta = "reports/mejores_productos.csv"
+    REPORTS_DIR.mkdir(exist_ok=True)
+    ruta = REPORTS_DIR / "mejores_productos.csv"
 
     with open(ruta, "w", newline="", encoding="utf-8") as archivo:
         campos = [
@@ -13,9 +16,10 @@ def exportar_csv(productos):
             "ganancia",
             "margen",
             "roi",
+            "evaluacion",
         ]
 
-        escritor = csv.DictWriter(archivo, fieldnames=campos)
+        escritor = csv.DictWriter(archivo, fieldnames=campos, lineterminator="\n")
         escritor.writeheader()
 
         for posicion, producto in enumerate(productos, start=1):
@@ -28,6 +32,7 @@ def exportar_csv(productos):
                     "ganancia": producto["ganancia"],
                     "margen": producto["margen"],
                     "roi": producto["roi"],
+                    "evaluacion": producto["evaluacion"],
                 }
             )
 
