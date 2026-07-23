@@ -23,6 +23,22 @@ class CalculatorTests(unittest.TestCase):
         self.assertEqual(clasificar_producto(50), "REGULAR")
         self.assertEqual(clasificar_producto(49.9), "NO RECOMENDADO")
 
+    def test_clasificaciones_con_niveles_personalizados(self):
+        niveles = {
+            "roi_excelente": 200,
+            "roi_bueno": 120,
+            "roi_regular": 80,
+        }
+
+        self.assertEqual(
+            clasificar_producto(120, **niveles),
+            "BUEN PRODUCTO",
+        )
+        self.assertEqual(
+            clasificar_producto(79.9, **niveles),
+            "NO RECOMENDADO",
+        )
+
     def test_ordena_por_roi(self):
         productos = [
             {"nombre": "B", "costo": 18, "precio": 44.99},

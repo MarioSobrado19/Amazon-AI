@@ -87,6 +87,28 @@ def cargar_configuracion(ruta=_CONFIG_FILE, base_dir=BASE_DIR):
     rutas = _obtener_seccion(configuracion, "rutas")
     costos = _obtener_seccion(configuracion, "costos")
     filtros = _obtener_seccion(configuracion, "filtros")
+    analisis = _obtener_seccion(configuracion, "analisis")
+
+    roi_excelente = _obtener_numero(
+        analisis,
+        "roi_excelente",
+        "analisis.roi_excelente",
+    )
+    roi_bueno = _obtener_numero(
+        analisis,
+        "roi_bueno",
+        "analisis.roi_bueno",
+    )
+    roi_regular = _obtener_numero(
+        analisis,
+        "roi_regular",
+        "analisis.roi_regular",
+    )
+    if not roi_excelente >= roi_bueno >= roi_regular:
+        raise ValueError(
+            "Los niveles deben cumplir: analisis.roi_excelente >= "
+            "analisis.roi_bueno >= analisis.roi_regular."
+        )
 
     return {
         "data_file": _resolver_ruta(
@@ -142,6 +164,11 @@ def cargar_configuracion(ruta=_CONFIG_FILE, base_dir=BASE_DIR):
                 "filtros.texto_nombre",
             ),
         },
+        "analisis": {
+            "roi_excelente": roi_excelente,
+            "roi_bueno": roi_bueno,
+            "roi_regular": roi_regular,
+        },
     }
 
 
@@ -153,3 +180,4 @@ ENVIO_PREDETERMINADO = _CONFIGURACION["envio_predeterminado"]
 TARIFA_AMAZON_PORCENTAJE = _CONFIGURACION["tarifa_amazon_porcentaje"]
 OTROS_COSTOS_PREDETERMINADOS = _CONFIGURACION["otros_costos_predeterminados"]
 FILTROS = _CONFIGURACION["filtros"]
+ANALISIS = _CONFIGURACION["analisis"]

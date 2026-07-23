@@ -17,7 +17,11 @@ CONFIGURACION_VALIDA = {
         "otros_costos_predeterminados": 1.0,
     },
     "filtros": {},
-    "analisis": {},
+    "analisis": {
+        "roi_excelente": 150,
+        "roi_bueno": 100,
+        "roi_regular": 50,
+    },
 }
 
 
@@ -43,6 +47,14 @@ class ConfigTests(unittest.TestCase):
             )
             self.assertEqual(configuracion["envio_predeterminado"], 3.0)
             self.assertEqual(configuracion["tarifa_amazon_porcentaje"], 0.15)
+            self.assertEqual(
+                configuracion["analisis"],
+                {
+                    "roi_excelente": 150.0,
+                    "roi_bueno": 100.0,
+                    "roi_regular": 50.0,
+                },
+            )
 
     def test_rechaza_seccion_faltante(self):
         with tempfile.TemporaryDirectory() as directorio:
@@ -161,6 +173,39 @@ class ConfigTests(unittest.TestCase):
             ruta = self._crear_config(directorio, configuracion)
 
             with self.assertRaisesRegex(ValueError, "filtros.texto_nombre"):
+                cargar_configuracion(ruta, directorio)
+
+    def test_rechaza_nivel_de_analisis_faltante(self):
+        configuracion = json.loads(json.dumps(CONFIGURACION_VALIDA))
+        del configuracion["analisis"]["roi_bueno"]
+
+        with tempfile.TemporaryDirectory() as directorio:
+            ruta = self._crear_config(directorio, configuracion)
+
+            with self.assertRaisesRegex(ValueError, "analisis.roi_bueno"):
+                cargar_configuracion(ruta, directorio)
+
+    def test_rechaza_nivel_de_analisis_invalido(self):
+        configuracion = json.loads(json.dumps(CONFIGURACION_VALIDA))
+        configuracion["analisis"]["roi_regular"] = "cincuenta"
+
+        with tempfile.TemporaryDirectory() as directorio:
+            ruta = self._crear_config(directorio, configuracion)
+
+            with self.assertRaisesRegex(ValueError, "analisis.roi_regular"):
+                cargar_configuracion(ruta, directorio)
+
+    def test_rechaza_niveles_de_analisis_desordenados(self):
+        configuracion = json.loads(json.dumps(CONFIGURACION_VALIDA))
+        configuracion["analisis"]["roi_excelente"] = 90
+
+        with tempfile.TemporaryDirectory() as directorio:
+            ruta = self._crear_config(directorio, configuracion)
+
+            with self.assertRaisesRegex(
+                ValueError,
+                r"roi_excelente.*roi_bueno.*roi_regular",
+            ):
                 cargar_configuracion(ruta, directorio)
 
 

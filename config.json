@@ -15,5 +15,9 @@
     "precio_maximo": null,
     "texto_nombre": null
   },
-  "analisis": {}
+  "analisis": {
+    "roi_excelente": 150,
+    "roi_bueno": 100,
+    "roi_regular": 50
+  }
 }

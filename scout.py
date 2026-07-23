@@ -1,13 +1,19 @@
 from calculator import calcular_rentabilidad
+from config import ANALISIS
 from filters import filtrar_productos
 
 
-def clasificar_producto(roi):
-    if roi >= 150:
+def clasificar_producto(
+    roi,
+    roi_excelente=ANALISIS["roi_excelente"],
+    roi_bueno=ANALISIS["roi_bueno"],
+    roi_regular=ANALISIS["roi_regular"],
+):
+    if roi >= roi_excelente:
         return "EXCELENTE PRODUCTO"
-    if roi >= 100:
+    if roi >= roi_bueno:
         return "BUEN PRODUCTO"
-    if roi >= 50:
+    if roi >= roi_regular:
         return "REGULAR"
     return "NO RECOMENDADO"
 

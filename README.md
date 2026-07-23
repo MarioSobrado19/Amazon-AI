@@ -48,7 +48,11 @@ Los valores editables están en `config.json`:
     "precio_maximo": null,
     "texto_nombre": null
   },
-  "analisis": {}
+  "analisis": {
+    "roi_excelente": 150,
+    "roi_bueno": 100,
+    "roi_regular": 50
+  }
 }
 ```
 
@@ -60,6 +64,10 @@ Los filtros son opcionales: usa un número mínimo para ROI, margen o ganancia; 
 precio máximo; o texto contenido en el nombre. Deja un filtro en `null` para
 desactivarlo. Los criterios activos se combinan y se aplican antes de mostrar y
 exportar los resultados.
+
+Los niveles de `analisis` controlan la clasificación por ROI. Deben estar
+ordenados de mayor a menor: `roi_excelente >= roi_bueno >= roi_regular`.
+Los valores predeterminados conservan las clasificaciones originales.
 
 ## Formato de entrada
 
