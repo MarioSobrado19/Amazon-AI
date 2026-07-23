@@ -8,6 +8,12 @@
     "tarifa_amazon_porcentaje": 0.15,
     "otros_costos_predeterminados": 1.0
   },
-  "filtros": {},
+  "filtros": {
+    "roi_minimo": null,
+    "margen_minimo": null,
+    "ganancia_minima": null,
+    "precio_maximo": null,
+    "texto_nombre": null
+  },
   "analisis": {}
 }

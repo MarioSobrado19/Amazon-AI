@@ -49,6 +49,22 @@ def _resolver_ruta(base_dir, valor, nombre):
     return ruta_resuelta
 
 
+def _obtener_numero_opcional(seccion, nombre, propiedad, minimo=0):
+    if nombre not in seccion or seccion[nombre] is None:
+        return None
+    return _obtener_numero(seccion, nombre, propiedad, minimo=minimo)
+
+
+def _obtener_texto_opcional(seccion, nombre, propiedad):
+    if nombre not in seccion or seccion[nombre] is None:
+        return None
+
+    valor = seccion[nombre]
+    if not isinstance(valor, str):
+        raise ValueError(f"'{propiedad}' debe ser texto o null.")
+    return valor.strip() or None
+
+
 def cargar_configuracion(ruta=_CONFIG_FILE, base_dir=BASE_DIR):
     ruta = Path(ruta)
     base_dir = Path(base_dir).resolve()
@@ -70,6 +86,7 @@ def cargar_configuracion(ruta=_CONFIG_FILE, base_dir=BASE_DIR):
 
     rutas = _obtener_seccion(configuracion, "rutas")
     costos = _obtener_seccion(configuracion, "costos")
+    filtros = _obtener_seccion(configuracion, "filtros")
 
     return {
         "data_file": _resolver_ruta(
@@ -98,6 +115,33 @@ def cargar_configuracion(ruta=_CONFIG_FILE, base_dir=BASE_DIR):
             "otros_costos_predeterminados",
             "costos.otros_costos_predeterminados",
         ),
+        "filtros": {
+            "roi_minimo": _obtener_numero_opcional(
+                filtros,
+                "roi_minimo",
+                "filtros.roi_minimo",
+            ),
+            "margen_minimo": _obtener_numero_opcional(
+                filtros,
+                "margen_minimo",
+                "filtros.margen_minimo",
+            ),
+            "ganancia_minima": _obtener_numero_opcional(
+                filtros,
+                "ganancia_minima",
+                "filtros.ganancia_minima",
+            ),
+            "precio_maximo": _obtener_numero_opcional(
+                filtros,
+                "precio_maximo",
+                "filtros.precio_maximo",
+            ),
+            "texto_nombre": _obtener_texto_opcional(
+                filtros,
+                "texto_nombre",
+                "filtros.texto_nombre",
+            ),
+        },
     }
 
 
@@ -108,3 +152,4 @@ REPORTS_DIR = _CONFIGURACION["reports_dir"]
 ENVIO_PREDETERMINADO = _CONFIGURACION["envio_predeterminado"]
 TARIFA_AMAZON_PORCENTAJE = _CONFIGURACION["tarifa_amazon_porcentaje"]
 OTROS_COSTOS_PREDETERMINADOS = _CONFIGURACION["otros_costos_predeterminados"]
+FILTROS = _CONFIGURACION["filtros"]

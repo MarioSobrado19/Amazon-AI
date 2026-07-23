@@ -109,6 +109,60 @@ class ConfigTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, r"rutas.datos.*\.\."):
                 cargar_configuracion(ruta, directorio)
 
+    def test_carga_filtros_opcionales(self):
+        configuracion = json.loads(json.dumps(CONFIGURACION_VALIDA))
+        configuracion["filtros"] = {
+            "roi_minimo": 100,
+            "margen_minimo": 25.5,
+            "ganancia_minima": 10,
+            "precio_maximo": 50,
+            "texto_nombre": "  cocina  ",
+        }
+
+        with tempfile.TemporaryDirectory() as directorio:
+            ruta = self._crear_config(directorio, configuracion)
+
+            filtros = cargar_configuracion(ruta, directorio)["filtros"]
+
+        self.assertEqual(
+            filtros,
+            {
+                "roi_minimo": 100.0,
+                "margen_minimo": 25.5,
+                "ganancia_minima": 10.0,
+                "precio_maximo": 50.0,
+                "texto_nombre": "cocina",
+            },
+        )
+
+    def test_filtros_vacios_se_convierten_en_none(self):
+        with tempfile.TemporaryDirectory() as directorio:
+            ruta = self._crear_config(directorio, CONFIGURACION_VALIDA)
+
+            filtros = cargar_configuracion(ruta, directorio)["filtros"]
+
+        self.assertTrue(all(valor is None for valor in filtros.values()))
+
+    def test_rechaza_filtro_numerico_invalido(self):
+        configuracion = json.loads(json.dumps(CONFIGURACION_VALIDA))
+        configuracion["filtros"] = {"roi_minimo": "alto"}
+
+        with tempfile.TemporaryDirectory() as directorio:
+            ruta = self._crear_config(directorio, configuracion)
+
+            with self.assertRaisesRegex(ValueError, "filtros.roi_minimo"):
+                cargar_configuracion(ruta, directorio)
+
+    def test_rechaza_filtro_de_texto_invalido(self):
+        configuracion = json.loads(json.dumps(CONFIGURACION_VALIDA))
+        configuracion["filtros"] = {"texto_nombre": 123}
+
+        with tempfile.TemporaryDirectory() as directorio:
+            ruta = self._crear_config(directorio, configuracion)
+
+            with self.assertRaisesRegex(ValueError, "filtros.texto_nombre"):
+                cargar_configuracion(ruta, directorio)
+
 
 if __name__ == "__main__":
     unittest.main()

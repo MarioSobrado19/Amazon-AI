@@ -2,10 +2,11 @@ from products import cargar_productos
 from report import generar_reporte
 from exporter import exportar_csv
 from scout import analizar_productos
+from config import FILTROS
 
 
 products = cargar_productos()
-resultados = analizar_productos(products)
+resultados = analizar_productos(products, **FILTROS)
 
 print("=" * 60)
 print("🚀 AMAZON SCOUT AI")

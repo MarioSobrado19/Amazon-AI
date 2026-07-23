@@ -41,7 +41,13 @@ Los valores editables están en `config.json`:
     "tarifa_amazon_porcentaje": 0.15,
     "otros_costos_predeterminados": 1.0
   },
-  "filtros": {},
+  "filtros": {
+    "roi_minimo": null,
+    "margen_minimo": null,
+    "ganancia_minima": null,
+    "precio_maximo": null,
+    "texto_nombre": null
+  },
   "analisis": {}
 }
 ```
@@ -49,6 +55,11 @@ Los valores editables están en `config.json`:
 Las rutas deben ser relativas a la carpeta del proyecto. La tarifa se expresa como
 decimal: `0.15` equivale al 15 %. El programa valida la configuración antes de
 procesar productos y muestra un error claro cuando encuentra un valor inválido.
+
+Los filtros son opcionales: usa un número mínimo para ROI, margen o ganancia; un
+precio máximo; o texto contenido en el nombre. Deja un filtro en `null` para
+desactivarlo. Los criterios activos se combinan y se aplican antes de mostrar y
+exportar los resultados.
 
 ## Formato de entrada
 
