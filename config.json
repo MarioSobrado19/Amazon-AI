@@ -1,0 +1,13 @@
+{
+  "rutas": {
+    "datos": "data/productos.csv",
+    "reportes": "reports"
+  },
+  "costos": {
+    "envio_predeterminado": 3.0,
+    "tarifa_amazon_porcentaje": 0.15,
+    "otros_costos_predeterminados": 1.0
+  },
+  "filtros": {},
+  "analisis": {}
+}

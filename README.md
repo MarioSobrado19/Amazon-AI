@@ -26,6 +26,30 @@ python3 main.py
 
 No requiere paquetes externos: usa solamente la biblioteca estándar de Python.
 
+## Configuración
+
+Los valores editables están en `config.json`:
+
+```json
+{
+  "rutas": {
+    "datos": "data/productos.csv",
+    "reportes": "reports"
+  },
+  "costos": {
+    "envio_predeterminado": 3.0,
+    "tarifa_amazon_porcentaje": 0.15,
+    "otros_costos_predeterminados": 1.0
+  },
+  "filtros": {},
+  "analisis": {}
+}
+```
+
+Las rutas deben ser relativas a la carpeta del proyecto. La tarifa se expresa como
+decimal: `0.15` equivale al 15 %. El programa valida la configuración antes de
+procesar productos y muestra un error claro cuando encuentra un valor inválido.
+
 ## Formato de entrada
 
 Edita `data/productos.csv` manteniendo estas columnas:
