@@ -26,6 +26,22 @@ python3 main.py
 
 No requiere paquetes externos: usa solamente la biblioteca estándar de Python.
 
+## Interfaz de la Beta
+
+La primera interfaz permite cargar y validar un CSV, revisar una vista previa y
+confirmar que los productos están listos para analizar.
+
+```bash
+python3 -m venv .venv-ui
+source .venv-ui/bin/activate
+pip install -r requirements.txt
+streamlit run ui/app.py
+```
+
+La aplicación abrirá una dirección local en el navegador. El análisis, los
+filtros y los reportes seguirán disponibles desde `main.py` mientras se integran
+progresivamente en la interfaz.
+
 ## Configuración
 
 Los valores editables están en `config.json`:
@@ -100,6 +116,7 @@ Amazon-AI/
 ├── report.py       # Reporte de texto
 ├── reports/        # Reportes generados
 ├── scout.py        # Análisis, clasificación y ranking
+├── ui/             # Interfaz web local de la Beta
 └── tests/          # Pruebas automáticas
 ```
 
