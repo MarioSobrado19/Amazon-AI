@@ -4,6 +4,7 @@ from ui.navigation import BIENVENIDA
 from ui.session import (
     confirmar_importacion,
     guardar_importacion,
+    guardar_analisis,
     inicializar_sesion,
     reiniciar_sesion,
 )
@@ -37,6 +38,22 @@ class SessionTests(unittest.TestCase):
         estado = {"productos": [], "importacion_confirmada": False}
 
         self.assertFalse(confirmar_importacion(estado))
+
+    def test_guarda_resultado_del_analisis(self):
+        estado = {}
+        inicializar_sesion(estado)
+        datos = {
+            "resultados": [{"nombre": "Producto"}],
+            "total_analizado": 1,
+            "filtros_aplicados": {"roi_minimo": 50},
+            "configuracion_aplicada": {"roi_excelente": 150},
+        }
+        resumen = {"total_mostrado": 1}
+
+        guardar_analisis(estado, datos, resumen)
+
+        self.assertEqual(estado["resultados"], [{"nombre": "Producto"}])
+        self.assertEqual(estado["resumen"], resumen)
 
     def test_reinicia_sesion(self):
         estado = {

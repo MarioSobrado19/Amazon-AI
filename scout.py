@@ -1,5 +1,10 @@
 from calculator import calcular_rentabilidad
-from config import ANALISIS
+from config import (
+    ANALISIS,
+    ENVIO_PREDETERMINADO,
+    OTROS_COSTOS_PREDETERMINADOS,
+    TARIFA_AMAZON_PORCENTAJE,
+)
 from filters import filtrar_productos
 
 
@@ -25,6 +30,12 @@ def analizar_productos(
     ganancia_minima=None,
     precio_maximo=None,
     texto_nombre=None,
+    envio_predeterminado=ENVIO_PREDETERMINADO,
+    tarifa_amazon_porcentaje=TARIFA_AMAZON_PORCENTAJE,
+    otros_costos_predeterminados=OTROS_COSTOS_PREDETERMINADOS,
+    roi_excelente=ANALISIS["roi_excelente"],
+    roi_bueno=ANALISIS["roi_bueno"],
+    roi_regular=ANALISIS["roi_regular"],
 ):
     resultados = []
 
@@ -33,8 +44,16 @@ def analizar_productos(
             producto["nombre"],
             producto["costo"],
             producto["precio"],
+            envio=envio_predeterminado,
+            otros_costos=otros_costos_predeterminados,
+            tarifa_amazon_porcentaje=tarifa_amazon_porcentaje,
         )
-        resultado["evaluacion"] = clasificar_producto(resultado["roi"])
+        resultado["evaluacion"] = clasificar_producto(
+            resultado["roi"],
+            roi_excelente=roi_excelente,
+            roi_bueno=roi_bueno,
+            roi_regular=roi_regular,
+        )
         resultados.append(resultado)
 
     resultados_ordenados = sorted(

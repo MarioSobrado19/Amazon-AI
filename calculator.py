@@ -11,13 +11,20 @@ def calcular_rentabilidad(
     precio,
     envio=ENVIO_PREDETERMINADO,
     otros_costos=OTROS_COSTOS_PREDETERMINADOS,
+    tarifa_amazon_porcentaje=TARIFA_AMAZON_PORCENTAJE,
 ):
     if costo <= 0:
         raise ValueError("El costo debe ser mayor que cero.")
     if precio <= 0:
         raise ValueError("El precio debe ser mayor que cero.")
+    if envio < 0:
+        raise ValueError("El envío no puede ser negativo.")
+    if otros_costos < 0:
+        raise ValueError("Los otros costos no pueden ser negativos.")
+    if not 0 <= tarifa_amazon_porcentaje <= 1:
+        raise ValueError("La tarifa de Amazon debe estar entre 0 y 1.")
 
-    tarifa_amazon = precio * TARIFA_AMAZON_PORCENTAJE
+    tarifa_amazon = precio * tarifa_amazon_porcentaje
 
     costo_total = costo + envio + tarifa_amazon + otros_costos
     ganancia = precio - costo_total

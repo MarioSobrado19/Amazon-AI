@@ -1,6 +1,6 @@
 """Confirmación final del flujo de Sprint 11."""
 
-from ui.navigation import VISTA_PREVIA, ir_a
+from ui.navigation import CONFIGURACION, VISTA_PREVIA, ir_a
 from ui.session import reiniciar_sesion
 
 
@@ -10,11 +10,10 @@ def renderizar(st, estado):
         f"Importaste correctamente {estado['total_productos']} productos desde "
         f"{estado['nombre_archivo']}."
     )
-    st.write(
-        "Tus datos están preparados. En el siguiente sprint podrás configurar "
-        "los criterios y ejecutar el análisis desde esta misma aplicación."
-    )
-    st.button("Continuar al análisis (próximamente)", disabled=True)
+    st.write("Tus datos están preparados para configurar y ejecutar el análisis.")
+    if st.button("Configurar análisis", type="primary"):
+        ir_a(estado, CONFIGURACION)
+        st.rerun()
 
     revisar, nuevo = st.columns(2)
     if revisar.button("← Revisar productos"):

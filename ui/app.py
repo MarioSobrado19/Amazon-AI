@@ -10,8 +10,16 @@ if str(PROJECT_ROOT) not in sys.path:
 
 import streamlit as st
 
-from ui.navigation import BIENVENIDA, CARGA, PRODUCTOS_LISTOS, VISTA_PREVIA, ir_a
-from ui.screens import preview, ready, upload, welcome
+from ui.navigation import (
+    BIENVENIDA,
+    CARGA,
+    CONFIGURACION,
+    PRODUCTOS_LISTOS,
+    RESULTADOS,
+    VISTA_PREVIA,
+    ir_a,
+)
+from ui.screens import configuration, preview, ready, results, upload, welcome
 from ui.session import inicializar_sesion
 
 
@@ -28,6 +36,8 @@ PANTALLAS = {
     CARGA: upload.renderizar,
     VISTA_PREVIA: preview.renderizar,
     PRODUCTOS_LISTOS: ready.renderizar,
+    CONFIGURACION: configuration.renderizar,
+    RESULTADOS: results.renderizar,
 }
 
 pantalla = st.session_state["pantalla_actual"]

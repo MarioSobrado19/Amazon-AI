@@ -29,3 +29,48 @@ def preparar_filas(productos):
         }
         for producto in productos
     ]
+
+
+def preparar_resultados(productos):
+    return [
+        {
+            "Posición": posicion,
+            "Producto": producto["nombre"],
+            "Precio": producto["precio"],
+            "Costo total": producto["costo_total"],
+            "Ganancia": producto["ganancia"],
+            "Margen %": producto["margen"],
+            "ROI %": producto["roi"],
+            "Evaluación": producto["evaluacion"],
+        }
+        for posicion, producto in enumerate(productos, start=1)
+    ]
+
+
+def preparar_estado_filtros(filtros=None):
+    filtros = dict(filtros or {})
+    numericos = (
+        "roi_minimo",
+        "margen_minimo",
+        "ganancia_minima",
+        "precio_maximo",
+    )
+    return {
+        "activos": {nombre: nombre in filtros for nombre in numericos},
+        "valores": {
+            nombre: float(filtros.get(nombre, 0.0)) for nombre in numericos
+        },
+        "texto_nombre": filtros.get("texto_nombre", ""),
+    }
+
+
+def construir_filtros(estado_filtros):
+    filtros = {
+        nombre: estado_filtros["valores"][nombre]
+        for nombre, activo in estado_filtros["activos"].items()
+        if activo
+    }
+    texto = estado_filtros.get("texto_nombre", "").strip()
+    if texto:
+        filtros["texto_nombre"] = texto
+    return filtros

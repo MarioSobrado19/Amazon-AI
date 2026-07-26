@@ -1,5 +1,6 @@
 """Estado del recorrido visual, sin dependencias de interfaz."""
 
+from application import CONFIGURACION_PREDETERMINADA
 from ui.navigation import BIENVENIDA
 
 
@@ -12,13 +13,18 @@ ESTADO_INICIAL = {
     "errores": [],
     "advertencias": [],
     "importacion_confirmada": False,
+    "configuracion": CONFIGURACION_PREDETERMINADA,
+    "filtros": {},
+    "resultados": None,
+    "resumen": None,
+    "total_analizado": 0,
 }
 
 
 def inicializar_sesion(estado):
     for clave, valor in ESTADO_INICIAL.items():
         if clave not in estado:
-            estado[clave] = valor.copy() if isinstance(valor, list) else valor
+            estado[clave] = valor.copy() if isinstance(valor, (list, dict)) else valor
 
 
 def guardar_importacion(estado, nombre_archivo, datos, advertencias=None):
@@ -38,6 +44,21 @@ def confirmar_importacion(estado):
     return True
 
 
+def guardar_analisis(estado, datos, resumen):
+    estado["resultados"] = list(datos["resultados"])
+    estado["total_analizado"] = datos["total_analizado"]
+    estado["filtros"] = dict(datos["filtros_aplicados"])
+    estado["configuracion"] = dict(datos["configuracion_aplicada"])
+    estado["resumen"] = dict(resumen)
+    estado["errores"] = []
+
+
+def limpiar_analisis(estado):
+    estado["resultados"] = None
+    estado["resumen"] = None
+    estado["total_analizado"] = 0
+
+
 def reiniciar_sesion(estado):
     for clave, valor in ESTADO_INICIAL.items():
-        estado[clave] = valor.copy() if isinstance(valor, list) else valor
+        estado[clave] = valor.copy() if isinstance(valor, (list, dict)) else valor

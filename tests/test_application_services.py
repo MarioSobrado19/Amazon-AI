@@ -166,6 +166,45 @@ class AnalysisServiceTests(unittest.TestCase):
         self.assertEqual(resultado["errores"][0]["codigo"], "analisis_fallido")
         self.assertNotIn("fallo interno", resultado["errores"][0]["mensaje"])
 
+    def test_aplica_configuracion_personalizada(self):
+        resultado = analizar(
+            [{"nombre": "Producto", "costo": 10, "precio": 40}],
+            configuracion={
+                "envio_predeterminado": 5,
+                "tarifa_amazon_porcentaje": 0.10,
+                "otros_costos_predeterminados": 2,
+                "roi_excelente": 300,
+                "roi_bueno": 200,
+                "roi_regular": 100,
+            },
+        )
+
+        self.assertTrue(resultado["exito"])
+        producto = resultado["datos"]["resultados"][0]
+        self.assertEqual(producto["costo_total"], 21.0)
+        self.assertEqual(producto["evaluacion"], "REGULAR")
+
+    def test_rechaza_configuracion_invalida(self):
+        resultado = analizar(
+            [{"nombre": "Producto", "costo": 10, "precio": 40}],
+            configuracion={"tarifa_amazon_porcentaje": 1.5},
+        )
+
+        self.assertFalse(resultado["exito"])
+        self.assertEqual(
+            resultado["errores"][0]["codigo"],
+            "configuracion_invalida",
+        )
+
+    def test_rechaza_niveles_de_roi_desordenados(self):
+        resultado = analizar(
+            [{"nombre": "Producto", "costo": 10, "precio": 40}],
+            configuracion={"roi_excelente": 90, "roi_bueno": 100},
+        )
+
+        self.assertFalse(resultado["exito"])
+        self.assertEqual(resultado["errores"][0]["campo"], "niveles_roi")
+
 
 class SummaryServiceTests(unittest.TestCase):
     def test_resume_resultados_sin_recalcular(self):

@@ -3,7 +3,9 @@ import unittest
 from ui.navigation import (
     BIENVENIDA,
     CARGA,
+    CONFIGURACION,
     PRODUCTOS_LISTOS,
+    RESULTADOS,
     VISTA_PREVIA,
     ir_a,
 )
@@ -18,6 +20,9 @@ class NavigationTests(unittest.TestCase):
         self.assertTrue(ir_a(estado, VISTA_PREVIA))
         estado["importacion_confirmada"] = True
         self.assertTrue(ir_a(estado, PRODUCTOS_LISTOS))
+        self.assertTrue(ir_a(estado, CONFIGURACION))
+        estado["resultados"] = []
+        self.assertTrue(ir_a(estado, RESULTADOS))
 
     def test_impide_vista_previa_sin_productos(self):
         estado = {"pantalla_actual": CARGA, "productos": []}

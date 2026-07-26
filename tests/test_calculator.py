@@ -17,6 +17,20 @@ class CalculatorTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             calcular_rentabilidad("Producto", 0, 20)
 
+    def test_permite_costos_y_tarifa_personalizados(self):
+        resultado = calcular_rentabilidad(
+            "Producto",
+            10,
+            40,
+            envio=5,
+            otros_costos=2,
+            tarifa_amazon_porcentaje=0.10,
+        )
+
+        self.assertEqual(resultado["tarifa_amazon"], 4.0)
+        self.assertEqual(resultado["costo_total"], 21.0)
+        self.assertEqual(resultado["ganancia"], 19.0)
+
     def test_clasificaciones(self):
         self.assertEqual(clasificar_producto(150), "EXCELENTE PRODUCTO")
         self.assertEqual(clasificar_producto(100), "BUEN PRODUCTO")
@@ -48,6 +62,16 @@ class CalculatorTests(unittest.TestCase):
         resultados = analizar_productos(productos)
 
         self.assertEqual([producto["nombre"] for producto in resultados], ["A", "B"])
+
+    def test_scout_usa_niveles_personalizados(self):
+        resultados = analizar_productos(
+            [{"nombre": "Producto", "costo": 10, "precio": 30}],
+            roi_excelente=300,
+            roi_bueno=200,
+            roi_regular=100,
+        )
+
+        self.assertEqual(resultados[0]["evaluacion"], "REGULAR")
 
 
 if __name__ == "__main__":
