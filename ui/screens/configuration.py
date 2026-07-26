@@ -2,7 +2,8 @@
 
 from application import CONFIGURACION_PREDETERMINADA, analizar, resumir
 from ui.components.messages import mostrar_mensajes
-from ui.navigation import PRODUCTOS_LISTOS, RESULTADOS, ir_a
+from ui.components.progress import mostrar_progreso
+from ui.navigation import CONFIGURACION, RESULTADOS, VISTA_PREVIA, ir_a
 from ui.session import guardar_analisis
 from ui.view_models import (
     construir_filtros,
@@ -46,6 +47,7 @@ def _filtros_desde_formulario(st, filtros_guardados):
 
 
 def renderizar(st, estado):
+    mostrar_progreso(st, CONFIGURACION)
     st.title("Configura el análisis")
     st.write(f"Analizarás **{estado['total_productos']} productos**.")
 
@@ -66,16 +68,21 @@ def renderizar(st, estado):
         value=float(valores["otros_costos_predeterminados"]),
     )
 
-    st.subheader("Niveles de evaluación por ROI")
-    roi_excelente = st.number_input(
-        "Excelente desde (%)", min_value=0.0, value=float(valores["roi_excelente"])
-    )
-    roi_bueno = st.number_input(
-        "Bueno desde (%)", min_value=0.0, value=float(valores["roi_bueno"])
-    )
-    roi_regular = st.number_input(
-        "Regular desde (%)", min_value=0.0, value=float(valores["roi_regular"])
-    )
+    with st.expander("Niveles de evaluación por ROI"):
+        st.caption("Puedes conservar estos valores recomendados para comenzar.")
+        roi_excelente = st.number_input(
+            "Excelente desde (%)",
+            min_value=0.0,
+            value=float(valores["roi_excelente"]),
+        )
+        roi_bueno = st.number_input(
+            "Bueno desde (%)", min_value=0.0, value=float(valores["roi_bueno"])
+        )
+        roi_regular = st.number_input(
+            "Regular desde (%)",
+            min_value=0.0,
+            value=float(valores["roi_regular"]),
+        )
 
     st.subheader("Filtros opcionales")
     st.caption("Activa únicamente los filtros que quieras aplicar.")
@@ -91,7 +98,8 @@ def renderizar(st, estado):
             "roi_bueno": roi_bueno,
             "roi_regular": roi_regular,
         }
-        resultado = analizar(estado["productos"], filtros, configuracion)
+        with st.spinner("Calculando rentabilidad y preparando el ranking..."):
+            resultado = analizar(estado["productos"], filtros, configuracion)
         if resultado["exito"]:
             datos = resultado["datos"]
             resumen = resumir(datos["resultados"], datos["total_analizado"])
@@ -105,6 +113,6 @@ def renderizar(st, estado):
             estado["errores"] = mensajes_de_error(resultado)
 
     mostrar_mensajes(st, estado.get("errores"))
-    if st.button("← Volver a productos listos"):
-        ir_a(estado, PRODUCTOS_LISTOS)
+    if st.button("← Volver a revisar productos"):
+        ir_a(estado, VISTA_PREVIA)
         st.rerun()
