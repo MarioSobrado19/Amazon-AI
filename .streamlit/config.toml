@@ -3,3 +3,9 @@ address = "localhost"
 
 [browser]
 gatherUsageStats = false
+
+[theme]
+primaryColor = "#234E70"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F4F7FA"
+textColor = "#172B3A"
