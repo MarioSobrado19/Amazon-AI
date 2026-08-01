@@ -7,6 +7,7 @@ from config import (
     OTROS_COSTOS_PREDETERMINADOS,
     TARIFA_AMAZON_PORCENTAJE,
 )
+from filters import filtrar_productos
 from scout import analizar_productos
 
 
@@ -119,11 +120,11 @@ def analizar(productos, filtros=None, configuracion=None):
         return resultado_fallido(error_configuracion)
 
     try:
-        resultados = analizar_productos(
+        resultados_completos = analizar_productos(
             productos,
-            **filtros,
             **configuracion_aplicada,
         )
+        resultados = filtrar_productos(resultados_completos, **filtros)
     except Exception:
         return resultado_fallido(
             ErrorAplicacion(
@@ -144,6 +145,7 @@ def analizar(productos, filtros=None, configuracion=None):
     return resultado_exitoso(
         {
             "resultados": resultados,
+            "resultados_completos": resultados_completos,
             "total_analizado": len(productos),
             "total_mostrado": len(resultados),
             "filtros_aplicados": dict(filtros),

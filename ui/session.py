@@ -17,6 +17,7 @@ ESTADO_INICIAL = {
     "filtros": {},
     "resultados": None,
     "resumen": None,
+    "insights": None,
     "total_analizado": 0,
 }
 
@@ -44,18 +45,20 @@ def confirmar_importacion(estado):
     return True
 
 
-def guardar_analisis(estado, datos, resumen):
+def guardar_analisis(estado, datos, resumen, insights=None):
     estado["resultados"] = list(datos["resultados"])
     estado["total_analizado"] = datos["total_analizado"]
     estado["filtros"] = dict(datos["filtros_aplicados"])
     estado["configuracion"] = dict(datos["configuracion_aplicada"])
     estado["resumen"] = dict(resumen)
+    estado["insights"] = dict(insights) if insights else None
     estado["errores"] = []
 
 
 def limpiar_analisis(estado):
     estado["resultados"] = None
     estado["resumen"] = None
+    estado["insights"] = None
     estado["total_analizado"] = 0
 
 

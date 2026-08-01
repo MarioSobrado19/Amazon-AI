@@ -3,6 +3,7 @@
 from application import exportar
 from ui.components.dashboard import mostrar_dashboard
 from ui.components.highlight import mostrar_mejor_producto
+from ui.components.insights import mostrar_insights
 from ui.components.messages import mostrar_mensajes
 from ui.components.progress import mostrar_progreso
 from ui.navigation import CONFIGURACION, ir_a
@@ -20,6 +21,8 @@ def renderizar(st, estado):
     mostrar_mensajes(st, advertencias=estado.get("advertencias"))
 
     mostrar_dashboard(st, resumen)
+    if estado.get("insights"):
+        mostrar_insights(st, estado["insights"])
 
     if resultados:
         mostrar_mejor_producto(st, resumen["producto_destacado"])
