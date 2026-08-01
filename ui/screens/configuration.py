@@ -1,6 +1,6 @@
 """Pantalla para configurar y ejecutar el análisis."""
 
-from application import CONFIGURACION_PREDETERMINADA, analizar, resumir
+from application import CONFIGURACION_PREDETERMINADA, analizar, crear_dashboard
 from ui.components.messages import mostrar_mensajes
 from ui.components.progress import mostrar_progreso
 from ui.navigation import CONFIGURACION, RESULTADOS, VISTA_PREVIA, ir_a
@@ -102,7 +102,9 @@ def renderizar(st, estado):
             resultado = analizar(estado["productos"], filtros, configuracion)
         if resultado["exito"]:
             datos = resultado["datos"]
-            resumen = resumir(datos["resultados"], datos["total_analizado"])
+            resumen = crear_dashboard(
+                datos["resultados"], datos["total_analizado"]
+            )
             if resumen["exito"]:
                 guardar_analisis(estado, datos, resumen["datos"])
                 estado["advertencias"] = resultado["advertencias"]

@@ -1,16 +1,13 @@
 """Pantalla de resultados del análisis real."""
 
 from application import exportar
+from ui.components.dashboard import mostrar_dashboard
 from ui.components.highlight import mostrar_mejor_producto
 from ui.components.messages import mostrar_mensajes
 from ui.components.progress import mostrar_progreso
 from ui.navigation import CONFIGURACION, ir_a
 from ui.session import limpiar_analisis, reiniciar_sesion
 from ui.view_models import mensajes_de_error, preparar_resultados
-
-
-def _valor_o_guion(valor, formato):
-    return formato.format(valor) if valor is not None else "—"
 
 
 def renderizar(st, estado):
@@ -22,18 +19,10 @@ def renderizar(st, estado):
     st.success(f"Analizamos correctamente {resumen['total_analizado']} productos.")
     mostrar_mensajes(st, advertencias=estado.get("advertencias"))
 
-    columnas = st.columns(4)
-    columnas[0].metric("Analizados", resumen["total_analizado"])
-    columnas[1].metric("Mostrados", resumen["total_mostrado"])
-    columnas[2].metric(
-        "Mejor ROI", _valor_o_guion(resumen["mejor_roi"], "{:.1f}%")
-    )
-    columnas[3].metric(
-        "Mayor ganancia", _valor_o_guion(resumen["mayor_ganancia"], "${:.2f}")
-    )
+    mostrar_dashboard(st, resumen)
 
     if resultados:
-        mostrar_mejor_producto(st, resultados[0])
+        mostrar_mejor_producto(st, resumen["producto_destacado"])
         st.subheader("Ranking de oportunidades")
         st.dataframe(preparar_resultados(resultados), width="stretch")
         with st.expander("¿Qué significan estos indicadores?"):
@@ -71,14 +60,6 @@ def renderizar(st, estado):
         mostrar_mensajes(st, errores=errores_exportacion)
     else:
         st.info("Ningún producto cumple los filtros actuales.")
-
-    with st.expander("Ver distribución completa"):
-        st.write(
-            f"Excelentes: **{resumen['cantidad_excelentes']}** · "
-            f"Buenos: **{resumen['cantidad_buenos']}** · "
-            f"Regulares: **{resumen['cantidad_regulares']}** · "
-            f"No recomendados: **{resumen['cantidad_no_recomendados']}**"
-        )
 
     ajustar, nuevo = st.columns(2)
     if ajustar.button("← Ajustar criterios"):
