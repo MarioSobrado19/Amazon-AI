@@ -3,6 +3,10 @@
 from collections import Counter
 
 from application.errors import ErrorAplicacion, resultado_exitoso, resultado_fallido
+from application.opportunity_service import (
+    PUNTAJE_ANALIZAR_CON_CUIDADO,
+    PUNTAJE_MUY_PROMETEDORA,
+)
 
 
 MINIMO_MUCHOS_RESULTADOS = 5
@@ -17,6 +21,14 @@ GANANCIA_EQUILIBRADA = 10.0
 GANANCIA_BAJA = 10.0
 GANANCIA_ALTA = 20.0
 CLASIFICACIONES_RECOMENDABLES = {"EXCELENTE PRODUCTO", "BUEN PRODUCTO"}
+
+
+def _es_puntaje_valido(valor):
+    return (
+        not isinstance(valor, bool)
+        and isinstance(valor, (int, float))
+        and 0 <= valor <= 100
+    )
 
 
 def _filtros_activos(filtros):
@@ -140,6 +152,22 @@ def generar_insights(
             proximos_pasos.append(
                 f"Valida costos y condiciones reales de {producto_prioritario['nombre']} antes de invertir."
             )
+
+        opportunity_score = producto_prioritario.get("opportunity_score")
+        if _es_puntaje_valido(opportunity_score):
+            if opportunity_score >= PUNTAJE_MUY_PROMETEDORA:
+                reglas_activadas.append("opportunity_score_alto")
+                fortalezas.append(
+                    f"{producto_prioritario['nombre']} alcanza un Opportunity Score de {opportunity_score:.1f}/100."
+                )
+                proximos_pasos.append(
+                    "Prioriza la validación de la oportunidad con mayor puntaje."
+                )
+            elif opportunity_score < PUNTAJE_ANALIZAR_CON_CUIDADO:
+                reglas_activadas.append("opportunity_score_bajo")
+                riesgos.append(
+                    f"El producto prioritario obtiene solo {opportunity_score:.1f}/100 en Opportunity Score."
+                )
 
     if roi_alto_ganancia_baja:
         reglas_activadas.append("roi_alto_ganancia_baja")

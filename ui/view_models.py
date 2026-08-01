@@ -41,6 +41,12 @@ def preparar_resultados(productos):
             "Ganancia": producto["ganancia"],
             "Margen %": producto["margen"],
             "ROI %": producto["roi"],
+            "Score financiero estimado": producto.get(
+                "opportunity_score", "—"
+            ),
+            "Categoría de oportunidad": producto.get(
+                "opportunity_category", "—"
+            ),
             "Evaluación": producto["evaluacion"],
         }
         for posicion, producto in enumerate(productos, start=1)

@@ -5,6 +5,7 @@ from application.dashboard_service import crear_dashboard
 from application.export_service import exportar
 from application.import_service import importar_desde_contenido, importar_desde_ruta
 from application.insight_service import generar_insights
+from application.opportunity_service import puntuar_oportunidades, puntuar_producto
 from application.summary_service import resumir
 
 __all__ = [
@@ -15,5 +16,7 @@ __all__ = [
     "importar_desde_contenido",
     "importar_desde_ruta",
     "generar_insights",
+    "puntuar_oportunidades",
+    "puntuar_producto",
     "resumir",
 ]

@@ -9,6 +9,7 @@ from config import (
 )
 from filters import filtrar_productos
 from scout import analizar_productos
+from application.opportunity_service import puntuar_oportunidades
 
 
 FILTROS_PERMITIDOS = {
@@ -124,7 +125,6 @@ def analizar(productos, filtros=None, configuracion=None):
             productos,
             **configuracion_aplicada,
         )
-        resultados = filtrar_productos(resultados_completos, **filtros)
     except Exception:
         return resultado_fallido(
             ErrorAplicacion(
@@ -135,6 +135,12 @@ def analizar(productos, filtros=None, configuracion=None):
                 ),
             )
         )
+
+    puntuacion = puntuar_oportunidades(resultados_completos)
+    if not puntuacion["exito"]:
+        return puntuacion
+    resultados_completos = puntuacion["datos"]
+    resultados = filtrar_productos(resultados_completos, **filtros)
 
     advertencias = []
     if not resultados:
