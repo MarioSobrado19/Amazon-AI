@@ -1,6 +1,6 @@
 """Pantalla de resultados del análisis real."""
 
-from application import exportar
+from application import LIMITACIONES_PILOTO, exportar, generar_reporte_comercial
 from ui.components.dashboard import mostrar_dashboard
 from ui.components.highlight import mostrar_mejor_producto
 from ui.components.insights import mostrar_insights
@@ -36,31 +36,50 @@ def renderizar(st, estado):
             )
 
         st.subheader("Descargar resultados")
+        reporte_comercial = generar_reporte_comercial(
+            resultados,
+            resumen,
+            estado.get("insights", {}),
+        )
         exportacion_csv = exportar(resultados, "csv")
         exportacion_txt = exportar(resultados, "txt")
         errores_exportacion = []
-        descargas = st.columns(2)
+        descargas = st.columns(3)
+        if reporte_comercial["exito"]:
+            datos_comerciales = reporte_comercial["datos"]
+            descargas[0].download_button(
+                "Descargar reporte comercial",
+                data=datos_comerciales["contenido"],
+                file_name=datos_comerciales["nombre_archivo"],
+                mime="text/plain",
+                type="primary",
+            )
         if exportacion_csv["exito"]:
             datos_csv = exportacion_csv["datos"]
-            descargas[0].download_button(
+            descargas[1].download_button(
                 "Descargar CSV",
                 data=datos_csv["contenido"],
                 file_name=datos_csv["nombre_archivo"],
                 mime="text/csv",
-                type="primary",
             )
         if exportacion_txt["exito"]:
             datos_txt = exportacion_txt["datos"]
-            descargas[1].download_button(
+            descargas[2].download_button(
                 "Descargar TXT",
                 data=datos_txt["contenido"],
                 file_name=datos_txt["nombre_archivo"],
                 mime="text/plain",
             )
-        for exportacion in (exportacion_csv, exportacion_txt):
+        for exportacion in (reporte_comercial, exportacion_csv, exportacion_txt):
             if not exportacion["exito"]:
                 errores_exportacion.extend(mensajes_de_error(exportacion))
         mostrar_mensajes(st, errores=errores_exportacion)
+        with st.expander("Uso responsable y limitaciones"):
+            st.warning(LIMITACIONES_PILOTO)
+            st.write(
+                "Confirma costos, demanda, competencia y condiciones del marketplace "
+                "antes de invertir. El score financiero no garantiza ventas."
+            )
     else:
         st.info("Ningún producto cumple los filtros actuales.")
 

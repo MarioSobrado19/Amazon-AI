@@ -6,6 +6,11 @@ from application.export_service import exportar
 from application.import_service import importar_desde_contenido, importar_desde_ruta
 from application.insight_service import generar_insights
 from application.opportunity_service import puntuar_oportunidades, puntuar_producto
+from application.pilot_service import (
+    LIMITACIONES_PILOTO,
+    PLANTILLA_CLIENTE_CSV,
+    generar_reporte_comercial,
+)
 from application.summary_service import resumir
 
 __all__ = [
@@ -18,5 +23,8 @@ __all__ = [
     "generar_insights",
     "puntuar_oportunidades",
     "puntuar_producto",
+    "generar_reporte_comercial",
+    "LIMITACIONES_PILOTO",
+    "PLANTILLA_CLIENTE_CSV",
     "resumir",
 ]

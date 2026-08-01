@@ -22,13 +22,21 @@ def renderizar(st, estado):
             "nombre,costo,precio\nOrganizador de cocina,8,29.99",
             language="csv",
         )
+        st.markdown(
+            "**Antes de subirlo:** usa el costo real por unidad y un precio de venta "
+            "prudente. Oriva no comprueba automáticamente si el producto tiene demanda."
+        )
 
     archivo = st.file_uploader("Selecciona un archivo CSV", type=["csv"])
     st.download_button(
-        "Descargar plantilla con ejemplos",
+        "Descargar plantilla para clientes",
         data=PLANTILLA_CSV,
         file_name="plantilla_productos.csv",
         mime="text/csv",
+    )
+    st.caption(
+        "Tus datos se usan para estimar rentabilidad y priorizar investigación. "
+        "No constituyen una recomendación de compra."
     )
 
     if archivo is not None:
