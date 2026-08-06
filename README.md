@@ -103,6 +103,12 @@ Organizador de cocina,8,29.99
 python3 -m unittest discover -s tests
 ```
 
+## Documentación
+
+- [Índice de documentación](docs/README.md)
+- [Modelo de dominio oficial de Oriva](docs/domain/ORIVA_DOMAIN_MODEL.md)
+- [Decisiones de arquitectura](docs/adr/)
+
 ## Estructura
 
 ```text
