@@ -4,6 +4,7 @@ from application import (
     CONFIGURACION_PREDETERMINADA,
     analizar,
     crear_dashboard,
+    generar_decision,
     generar_insights,
 )
 from ui.components.messages import mostrar_mensajes
@@ -118,15 +119,26 @@ def renderizar(st, estado):
                     datos["filtros_aplicados"],
                 )
                 if insights["exito"]:
-                    guardar_analisis(
-                        estado,
-                        datos,
+                    decision = generar_decision(
+                        datos["resultados_completos"],
+                        datos["resultados"],
                         resumen["datos"],
                         insights["datos"],
+                        datos["filtros_aplicados"],
                     )
-                    estado["advertencias"] = resultado["advertencias"]
-                    ir_a(estado, RESULTADOS)
-                    st.rerun()
+                    if decision["exito"]:
+                        guardar_analisis(
+                            estado,
+                            datos,
+                            resumen["datos"],
+                            insights["datos"],
+                            decision["datos"],
+                        )
+                        estado["advertencias"] = resultado["advertencias"]
+                        ir_a(estado, RESULTADOS)
+                        st.rerun()
+                    else:
+                        estado["errores"] = mensajes_de_error(decision)
                 else:
                     estado["errores"] = mensajes_de_error(insights)
             else:

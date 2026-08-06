@@ -2,6 +2,7 @@
 
 from application import LIMITACIONES_PILOTO, exportar, generar_reporte_comercial
 from ui.components.dashboard import mostrar_dashboard
+from ui.components.decision import mostrar_decision
 from ui.components.highlight import mostrar_mejor_producto
 from ui.components.insights import mostrar_insights
 from ui.components.messages import mostrar_mensajes
@@ -23,6 +24,8 @@ def renderizar(st, estado):
     mostrar_dashboard(st, resumen)
     if estado.get("insights"):
         mostrar_insights(st, estado["insights"])
+    if estado.get("decision"):
+        mostrar_decision(st, estado["decision"])
 
     if resultados:
         mostrar_mejor_producto(st, resumen["producto_destacado"])

@@ -2,6 +2,7 @@
 
 from application.analysis_service import CONFIGURACION_PREDETERMINADA, analizar
 from application.dashboard_service import crear_dashboard
+from application.decision_service import generar_decision
 from application.export_service import exportar
 from application.import_service import importar_desde_contenido, importar_desde_ruta
 from application.insight_service import generar_insights
@@ -17,6 +18,7 @@ __all__ = [
     "analizar",
     "CONFIGURACION_PREDETERMINADA",
     "crear_dashboard",
+    "generar_decision",
     "exportar",
     "importar_desde_contenido",
     "importar_desde_ruta",
