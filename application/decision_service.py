@@ -1,11 +1,19 @@
 """Decisiones financieras explicables a partir de resultados ya calculados."""
 
+from application.adapters.decision_domain_adapter import (
+    construir_analisis_decision,
+    construir_recomendacion_dominio,
+    convertir_recomendacion_a_formato_actual,
+    convertir_resultados_a_formato_actual,
+)
 from application.errors import ErrorAplicacion, resultado_exitoso, resultado_fallido
 from application.opportunity_service import (
     PUNTAJE_ANALIZAR_CON_CUIDADO,
     PUNTAJE_INTERESANTE,
     PUNTAJE_MUY_PROMETEDORA,
 )
+from domain.contracts import AnalysisResult, DecisionRecommendation
+from domain.exceptions import DomainValidationError
 
 
 ESTADOS_PERMITIDOS = {
@@ -214,7 +222,7 @@ def _nivel_confianza(datos_faltantes):
     return "alto"
 
 
-def generar_decision(
+def _generar_decision_heredada(
     resultados_completos,
     resultados_filtrados,
     dashboard,
@@ -436,4 +444,103 @@ def generar_decision(
             "pregunta_de_continuacion": pregunta,
             "contexto_utilizado": contexto,
         }
+    )
+
+
+def generar_decision_dominio(
+    analisis_completo,
+    analisis_filtrado,
+    dashboard,
+    insights,
+    filtros_activos,
+    contexto_usuario=None,
+):
+    """Consume contratos oficiales y conserva sin cambios las reglas vigentes."""
+    if not isinstance(analisis_completo, AnalysisResult):
+        raise DomainValidationError("analisis_completo debe ser AnalysisResult válido.")
+    if not isinstance(analisis_filtrado, AnalysisResult):
+        raise DomainValidationError("analisis_filtrado debe ser AnalysisResult válido.")
+
+    completos = convertir_resultados_a_formato_actual(
+        analisis_completo.opportunities
+    )
+    filtrados = convertir_resultados_a_formato_actual(
+        analisis_filtrado.opportunities
+    )
+    respuesta = _generar_decision_heredada(
+        completos,
+        filtrados,
+        dashboard,
+        insights,
+        filtros_activos,
+        contexto_usuario,
+    )
+    if not respuesta["exito"]:
+        return respuesta
+
+    prioritario = _producto_prioritario(filtrados)
+    trazabilidad = list(analisis_filtrado.opportunities)
+    ids_trazados = {
+        item.opportunity.opportunity_id for item in trazabilidad
+    }
+    trazabilidad.extend(
+        item
+        for item in analisis_completo.opportunities
+        if item.opportunity.opportunity_id not in ids_trazados
+    )
+    primary_opportunity_id = None
+    if prioritario is not None:
+        indice = filtrados.index(prioritario)
+        primary_opportunity_id = (
+            analisis_filtrado.opportunities[indice].opportunity.opportunity_id
+        )
+    contract = construir_recomendacion_dominio(
+        respuesta["datos"],
+        trazabilidad,
+        primary_opportunity_id=primary_opportunity_id,
+    )
+    return resultado_exitoso(contract)
+
+
+def generar_decision(
+    resultados_completos,
+    resultados_filtrados,
+    dashboard,
+    insights,
+    filtros_activos,
+    contexto_usuario=None,
+):
+    """Mantiene el contrato heredado de la UI sobre el flujo oficial de dominio."""
+    campo_invalido = _validar_entradas(
+        resultados_completos,
+        resultados_filtrados,
+        dashboard,
+        insights,
+        filtros_activos,
+    )
+    if campo_invalido:
+        return _error(campo_invalido, f"{campo_invalido} es inválido.")
+
+    analisis_completo = construir_analisis_decision(
+        resultados_completos,
+        analysis_id="decision-completo",
+    )
+    analisis_filtrado = construir_analisis_decision(
+        resultados_filtrados,
+        analysis_id="decision-filtrado",
+    )
+    respuesta = generar_decision_dominio(
+        analisis_completo,
+        analisis_filtrado,
+        dashboard,
+        insights,
+        filtros_activos,
+        contexto_usuario,
+    )
+    if not respuesta["exito"]:
+        return respuesta
+    if not isinstance(respuesta["datos"], DecisionRecommendation):
+        raise DomainValidationError("El Decision Engine no devolvió su contrato oficial.")
+    return resultado_exitoso(
+        convertir_recomendacion_a_formato_actual(respuesta["datos"])
     )
