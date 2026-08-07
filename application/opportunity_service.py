@@ -2,7 +2,12 @@
 
 import math
 
+from application.adapters import (
+    construir_oportunidad_desde_formato_actual,
+    convertir_oportunidad_a_formato_actual,
+)
 from application.errors import ErrorAplicacion, resultado_exitoso, resultado_fallido
+from domain.exceptions import DomainValidationError
 
 
 PESO_ROI = 40.0
@@ -65,6 +70,21 @@ def puntuar_producto(producto):
                 )
             )
 
+    try:
+        domain_opportunity = construir_oportunidad_desde_formato_actual(producto)
+        producto_compatible = convertir_oportunidad_a_formato_actual(
+            domain_opportunity
+        )
+    except DomainValidationError:
+        return resultado_fallido(
+            ErrorAplicacion(
+                codigo="producto_invalido",
+                mensaje="El producto no contiene la información mínima requerida.",
+                campo="producto",
+            )
+        )
+    producto = producto_compatible
+
     puntos_roi = _contribucion(producto["roi"], ROI_REFERENCIA, PESO_ROI)
     puntos_margen = _contribucion(
         producto["margen"], MARGEN_REFERENCIA, PESO_MARGEN
@@ -97,7 +117,20 @@ def puntuar_producto(producto):
             "referencia": GANANCIA_REFERENCIA,
         },
     }
-    return resultado_exitoso(puntuado)
+    try:
+        puntuado_domain = construir_oportunidad_desde_formato_actual(puntuado)
+        puntuado_compatible = convertir_oportunidad_a_formato_actual(
+            puntuado_domain
+        )
+    except DomainValidationError:
+        return resultado_fallido(
+            ErrorAplicacion(
+                codigo="producto_invalido",
+                mensaje="No se pudo representar la oportunidad analizada.",
+                campo="producto",
+            )
+        )
+    return resultado_exitoso(puntuado_compatible)
 
 
 def puntuar_oportunidades(productos):

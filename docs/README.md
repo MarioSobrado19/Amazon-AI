@@ -3,6 +3,7 @@
 ## Arquitectura de dominio
 
 - [Modelo de dominio oficial](domain/ORIVA_DOMAIN_MODEL.md)
+- [Adaptación del Opportunity Engine](domain/OPPORTUNITY_ADAPTER.md)
 
 ## Architecture Decision Records
 
@@ -16,4 +17,3 @@
 ## Pilotos
 
 - [Checklist de sesión piloto](PILOT_CHECKLIST.md)
-

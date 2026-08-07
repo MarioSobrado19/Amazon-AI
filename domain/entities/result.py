@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from decimal import Decimal
 from math import isfinite
 
-from domain.entities._validation import required_text
+from domain.entities._validation import optional_text, required_text
 from domain.enums import ConfidenceLevel, EvidenceType
 from domain.exceptions import DomainValidationError
 from domain.value_objects import Money, Percentage
@@ -40,6 +40,7 @@ class Result:
     source: str
     confidence: ConfidenceLevel = ConfidenceLevel.MEDIUM
     recorded_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    version: str | None = None
 
     def __post_init__(self):
         object.__setattr__(self, "result_id", required_text(self.result_id, "result_id"))
@@ -59,6 +60,7 @@ class Result:
             raise DomainValidationError("recorded_at debe ser una fecha válida.")
         if self.recorded_at.tzinfo is None:
             raise DomainValidationError("recorded_at debe incluir zona horaria.")
+        object.__setattr__(self, "version", optional_text(self.version, "version"))
 
     def __eq__(self, other):
         if not isinstance(other, Result):
@@ -77,4 +79,5 @@ class Result:
             "source": self.source,
             "confidence": self.confidence.value,
             "recorded_at": self.recorded_at.isoformat(),
+            "version": self.version,
         }
