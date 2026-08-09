@@ -5,6 +5,7 @@ from domain.contracts import (
     BusinessModelAssessment,
     DecisionRecommendation,
     MarketplaceCatalogResult,
+    MarketplaceCatalogIssue,
     OpportunityResult,
     OpportunityScenarioResult,
 )
@@ -44,6 +45,7 @@ __all__ = [
     "FrozenMapping",
     "Marketplace",
     "MarketplaceCatalogResult",
+    "MarketplaceCatalogIssue",
     "MarketplaceConditionSnapshot",
     "Money",
     "Opportunity",

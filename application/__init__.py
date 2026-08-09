@@ -12,6 +12,7 @@ from application.pilot_service import (
     PLANTILLA_CLIENTE_CSV,
     generar_reporte_comercial,
 )
+from application.marketplace_service import crear_catalogo_marketplace
 from application.summary_service import resumir
 
 __all__ = [
@@ -30,4 +31,5 @@ __all__ = [
     "LIMITACIONES_PILOTO",
     "PLANTILLA_CLIENTE_CSV",
     "resumir",
+    "crear_catalogo_marketplace",
 ]
