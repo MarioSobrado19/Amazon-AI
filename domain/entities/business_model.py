@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 
 from domain.entities._marketplace_validation import (
@@ -10,7 +10,7 @@ from domain.entities._marketplace_validation import (
 from domain.entities._identity import internal_id
 from domain.enums import ConfidenceLevel, OperationalLoad
 from domain.exceptions import DomainValidationError
-from domain.value_objects import Region
+from domain.value_objects import FrozenMapping, Region
 
 
 @dataclass(frozen=True, slots=True, eq=False)
@@ -43,6 +43,7 @@ class BusinessModel:
     valid_from: datetime | None = None
     valid_until: datetime | None = None
     represents_external_conditions: bool = False
+    comparison_profile: FrozenMapping = field(default_factory=FrozenMapping)
 
     def __post_init__(self):
         object.__setattr__(
@@ -89,6 +90,12 @@ class BusinessModel:
             raise DomainValidationError("operational_load debe ser válido.")
         if not isinstance(self.represents_external_conditions, bool):
             raise DomainValidationError("represents_external_conditions debe ser booleano.")
+        if not isinstance(self.comparison_profile, FrozenMapping):
+            object.__setattr__(
+                self,
+                "comparison_profile",
+                FrozenMapping.from_mapping(self.comparison_profile),
+            )
         valid_from, valid_until = valid_period(self.valid_from, self.valid_until)
         object.__setattr__(self, "valid_from", valid_from)
         object.__setattr__(self, "valid_until", valid_until)
@@ -142,4 +149,5 @@ class BusinessModel:
             "confidence": self.confidence.value,
             "version": self.version,
             "represents_external_conditions": self.represents_external_conditions,
+            "comparison_profile": self.comparison_profile.to_dict(),
         }

@@ -13,6 +13,7 @@ from application.pilot_service import (
     generar_reporte_comercial,
 )
 from application.marketplace_service import crear_catalogo_marketplace
+from application.business_model_service import comparar_modelos_operativos
 from application.summary_service import resumir
 
 __all__ = [
@@ -32,4 +33,5 @@ __all__ = [
     "PLANTILLA_CLIENTE_CSV",
     "resumir",
     "crear_catalogo_marketplace",
+    "comparar_modelos_operativos",
 ]
