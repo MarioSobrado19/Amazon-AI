@@ -6,6 +6,10 @@
 - [Adaptación del Opportunity Engine](domain/OPPORTUNITY_ADAPTER.md)
 - [Arquitectura de Marketplace y modelos operativos](architecture/MARKETPLACE_BUSINESS_MODEL_ARCHITECTURE.md)
 
+## Integraciones
+
+- [Diseño de integración Amazon US](integrations/AMAZON_US_INTEGRATION_DESIGN.md)
+
 ## Architecture Decision Records
 
 - [ADR-001: Oportunidad como entidad central](adr/ADR-001-opportunity-central-entity.md)
