@@ -12,7 +12,11 @@ from application.opportunity_service import (
     PUNTAJE_INTERESANTE,
     PUNTAJE_MUY_PROMETEDORA,
 )
-from domain.contracts import AnalysisResult, DecisionRecommendation
+from domain.contracts import (
+    AnalysisResult,
+    BusinessModelComparisonResult,
+    DecisionRecommendation,
+)
 from domain.exceptions import DomainValidationError
 
 
@@ -222,6 +226,272 @@ def _nivel_confianza(datos_faltantes):
     return "alto"
 
 
+def _agregar_unicos(destino, valores):
+    destino.extend(valor for valor in valores if valor and valor not in destino)
+
+
+def _integrar_comparacion_modelos(decision, comparacion, contexto):
+    """Integra evidencia ya evaluada; no recalcula compatibilidad ni crea scores."""
+
+    if not isinstance(comparacion, BusinessModelComparisonResult):
+        raise DomainValidationError(
+            "comparacion_modelos debe ser BusinessModelComparisonResult válido."
+        )
+
+    datos = {
+        clave: list(valor) if isinstance(valor, list) else dict(valor)
+        if isinstance(valor, dict)
+        else valor
+        for clave, valor in decision.items()
+    }
+    evaluaciones = comparacion.assessments
+    compatibles = tuple(
+        item
+        for item in evaluaciones
+        if item.compatibility in {"compatible", "compatible_con_condiciones"}
+    )
+    incompatibles = tuple(
+        item for item in evaluaciones if item.compatibility == "incompatible"
+    )
+    indeterminados = tuple(
+        item for item in evaluaciones if item.compatibility == "indeterminado"
+    )
+    restricciones_fuertes = tuple(
+        (item, dimension)
+        for item in evaluaciones
+        for dimension in item.dimensions
+        if dimension.evaluation == "incompatible"
+    )
+
+    _agregar_unicos(
+        datos["evidencia_favorable"],
+        (
+            "Dato del Business Model Engine: "
+            f"se evaluaron {len(evaluaciones)} modelos operativos con la versión "
+            f"{comparacion.version}.",
+        ),
+    )
+    for item in evaluaciones:
+        _agregar_unicos(
+            datos["evidencia_favorable"],
+            (
+                "Evaluación del Business Model Engine: "
+                f"{item.business_model.name} = {item.compatibility}; "
+                f"confianza {item.confidence.value}.",
+            ),
+        )
+    for item, dimension in restricciones_fuertes:
+        _agregar_unicos(
+            datos["riesgos"],
+            (
+                f"{item.business_model.name}: {dimension.explanation} "
+                f"(dimensión: {dimension.dimension}).",
+            ),
+        )
+    _agregar_unicos(
+        datos["datos_faltantes"],
+        tuple(f"modelo operativo: {item}" for item in comparacion.missing_data),
+    )
+    _agregar_unicos(
+        datos["reglas_aplicadas"],
+        (
+            "business_model_comparison_consumed",
+            *(
+                f"business_model_dimension:{dimension.dimension}"
+                for item in evaluaciones
+                for dimension in item.dimensions
+                if dimension.evaluation in {"desfavorable", "incompatible", "desconocida"}
+            ),
+        ),
+    )
+    datos["contexto_utilizado"].update(
+        {
+            "business_model_comparison_id": comparacion.comparison_id,
+            "business_model_comparison_version": comparacion.version,
+            "business_model_confidence": comparacion.confidence.value,
+            "business_models_considered": tuple(
+                item.business_model.name for item in evaluaciones
+            ),
+            "business_model_under_consideration": (
+                comparacion.consideration_model.name
+                if comparacion.consideration_model
+                else None
+            ),
+            "business_model_alternatives": tuple(
+                item.name for item in comparacion.alternatives
+            ),
+            "business_model_relevant_dimensions": tuple(
+                dict.fromkeys(
+                    dimension.dimension
+                    for item in evaluaciones
+                    for dimension in item.dimensions
+                    if dimension.evaluation
+                    in {"desfavorable", "incompatible", "desconocida"}
+                )
+            ),
+            "business_model_strong_restrictions": tuple(
+                dimension.explanation
+                for _, dimension in restricciones_fuertes
+            ),
+        }
+    )
+    _agregar_unicos(
+        datos["limitaciones"],
+        (
+            "La comparación de modelos operativos orienta el próximo paso; no elige por el usuario.",
+        ),
+    )
+
+    temas_educativos = tuple(
+        dict.fromkeys(
+            tema
+            for item in evaluaciones
+            for tema in item.educational_topics
+        )
+    )
+    datos["contexto_utilizado"]["business_model_educational_topics"] = (
+        temas_educativos
+    )
+    _agregar_unicos(
+        datos["reglas_aplicadas"],
+        tuple(
+            f"business_model_educational_topic:{tema}"
+            for tema in temas_educativos
+        ),
+    )
+    beginner = bool(
+        comparacion.simplified_for_beginner
+        or contexto.get("experiencia") == "principiante"
+    )
+
+    if not evaluaciones or (indeterminados and len(indeterminados) == len(evaluaciones)):
+        if datos["estado"] not in {"explorar", "posponer"}:
+            datos["estado"] = "investigar"
+        datos["proximo_paso"] = (
+            "Siguiente paso sugerido: completar presupuesto, tiempo, logística, "
+            "almacenamiento y preferencias antes de comparar modelos operativos."
+        )
+        _agregar_unicos(
+            datos["reglas_aplicadas"],
+            ("business_model_context_incomplete",),
+        )
+    elif incompatibles and len(incompatibles) == len(evaluaciones):
+        if datos["estado"] != "explorar":
+            datos["estado"] = "investigar"
+        datos["proximo_paso"] = (
+            "Siguiente paso sugerido: revisar las restricciones, el marketplace o la "
+            "estrategia; la evaluación actual no conserva un modelo compatible."
+        )
+        _agregar_unicos(
+            datos["reglas_aplicadas"],
+            ("all_business_models_incompatible",),
+        )
+    elif comparacion.consideration_model is None and len(compatibles) >= 2:
+        if datos["estado"] not in {"explorar", "posponer"}:
+            datos["estado"] = "comparar"
+        datos["proximo_paso"] = (
+            "Siguiente paso sugerido: comparar las compensaciones de los modelos "
+            "operativos sin declarar un ganador."
+        )
+        _agregar_unicos(
+            datos["alternativas"],
+            tuple(
+                f"Mantener {item.business_model.name} como alternativa en estudio."
+                for item in compatibles
+            ),
+        )
+        _agregar_unicos(
+            datos["reglas_aplicadas"],
+            ("multiple_business_models_compare_tradeoffs",),
+        )
+    elif comparacion.consideration_model is not None:
+        if datos["estado"] not in {"explorar", "posponer"}:
+            datos["estado"] = "investigar"
+        model = comparacion.consideration_model
+        datos["proximo_paso"] = (
+            "Siguiente paso sugerido: estudiar "
+            f"{model.name} como opción de consideración y verificar sus requisitos, "
+            "responsabilidades y restricciones antes de cualquier decisión."
+        )
+        _agregar_unicos(
+            datos["evidencia_favorable"],
+            (
+                "Orientación del Business Model Engine: "
+                f"{model.name} merece mayor consideración; no constituye una elección final.",
+            ),
+        )
+        _agregar_unicos(
+            datos["reglas_aplicadas"],
+            ("business_model_for_further_study",),
+        )
+        _agregar_unicos(
+            datos["alternativas"],
+            tuple(
+                f"Conservar {item.name} como alternativa para comparar."
+                for item in comparacion.alternatives
+            ),
+        )
+    elif any(item.compatibility == "compatible_con_condiciones" for item in evaluaciones):
+        if datos["estado"] not in {"explorar", "posponer"}:
+            datos["estado"] = "investigar"
+        datos["proximo_paso"] = (
+            "Siguiente paso sugerido: revisar las dimensiones que limitan el ajuste "
+            "antes de considerar un modelo operativo."
+        )
+        _agregar_unicos(
+            datos["reglas_aplicadas"],
+            ("partially_compatible_business_model",),
+        )
+
+    if restricciones_fuertes:
+        _agregar_unicos(
+            datos["reglas_aplicadas"],
+            ("strong_business_model_restriction_visible",),
+        )
+    parciales = tuple(
+        item
+        for item in evaluaciones
+        if item.compatibility == "compatible_con_condiciones"
+    )
+    if parciales:
+        _agregar_unicos(
+            datos["reglas_aplicadas"],
+            ("partially_compatible_business_model",),
+        )
+        _agregar_unicos(
+            datos["riesgos"],
+            tuple(
+                f"{item.business_model.name}: {dimension.explanation} "
+                f"(dimensión limitante: {dimension.dimension})."
+                for item in parciales
+                for dimension in item.dimensions
+                if dimension.evaluation in {"desfavorable", "desconocida"}
+            ),
+        )
+    if beginner and temas_educativos:
+        datos["proximo_paso"] = (
+            "Paso educativo sugerido antes de una decisión operativa: aprender "
+            f"{temas_educativos[0]}. Después, {datos['proximo_paso'][0].lower()}"
+            f"{datos['proximo_paso'][1:]}"
+        )
+        _agregar_unicos(
+            datos["reglas_aplicadas"],
+            ("business_model_beginner_education_first",),
+        )
+
+    if comparacion.confidence.value == "bajo":
+        datos["nivel_confianza"] = "bajo"
+        _agregar_unicos(
+            datos["reglas_aplicadas"],
+            ("business_model_low_confidence",),
+        )
+    elif comparacion.confidence.value == "medio" and datos["nivel_confianza"] == "alto":
+        datos["nivel_confianza"] = "medio"
+
+    datos["pregunta_de_continuacion"] = comparacion.continuation_question
+    return datos
+
+
 def _generar_decision_heredada(
     resultados_completos,
     resultados_filtrados,
@@ -229,6 +499,7 @@ def _generar_decision_heredada(
     insights,
     filtros_activos,
     contexto_usuario=None,
+    comparacion_modelos=None,
 ):
     """Genera una orientación reproducible sin recalcular métricas financieras."""
     campo_invalido = _validar_entradas(
@@ -427,8 +698,7 @@ def _generar_decision_heredada(
         pregunta = "¿Qué información nueva quieres incorporar a la siguiente decisión?"
 
     assert estado in ESTADOS_PERMITIDOS
-    return resultado_exitoso(
-        {
+    decision = {
             "estado": estado,
             "recomendacion_principal": recomendacion,
             "resumen": resumen,
@@ -444,7 +714,14 @@ def _generar_decision_heredada(
             "pregunta_de_continuacion": pregunta,
             "contexto_utilizado": contexto,
         }
-    )
+    if comparacion_modelos is not None:
+        try:
+            decision = _integrar_comparacion_modelos(
+                decision, comparacion_modelos, contexto
+            )
+        except DomainValidationError as error:
+            return _error("comparacion_modelos", str(error))
+    return resultado_exitoso(decision)
 
 
 def generar_decision_dominio(
@@ -454,6 +731,7 @@ def generar_decision_dominio(
     insights,
     filtros_activos,
     contexto_usuario=None,
+    comparacion_modelos=None,
 ):
     """Consume contratos oficiales y conserva sin cambios las reglas vigentes."""
     if not isinstance(analisis_completo, AnalysisResult):
@@ -474,6 +752,7 @@ def generar_decision_dominio(
         insights,
         filtros_activos,
         contexto_usuario,
+        comparacion_modelos,
     )
     if not respuesta["exito"]:
         return respuesta
@@ -509,6 +788,7 @@ def generar_decision(
     insights,
     filtros_activos,
     contexto_usuario=None,
+    comparacion_modelos=None,
 ):
     """Mantiene el contrato heredado de la UI sobre el flujo oficial de dominio."""
     campo_invalido = _validar_entradas(
@@ -536,6 +816,7 @@ def generar_decision(
         insights,
         filtros_activos,
         contexto_usuario,
+        comparacion_modelos,
     )
     if not respuesta["exito"]:
         return respuesta
