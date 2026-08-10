@@ -5,6 +5,7 @@
 - [Modelo de dominio oficial](domain/ORIVA_DOMAIN_MODEL.md)
 - [Adaptación del Opportunity Engine](domain/OPPORTUNITY_ADAPTER.md)
 - [Arquitectura de Marketplace y modelos operativos](architecture/MARKETPLACE_BUSINESS_MODEL_ARCHITECTURE.md)
+- [Arquitectura Goal-to-Business y Opportunity Graph](architecture/GOAL_TO_BUSINESS_OPPORTUNITY_GRAPH_ARCHITECTURE.md)
 
 ## Integraciones
 
@@ -26,6 +27,15 @@
 - [ADR-012: Separación entre educación y políticas](adr/ADR-012-education-policy-separation.md)
 - [ADR-013: IA explicadora, no fuente de verdad](adr/ADR-013-ai-explainer-not-source-of-truth.md)
 - [ADR-014: Vigencia por tipo de información](adr/ADR-014-information-freshness-strategy.md)
+- [ADR-015: Objetivo como raíz de Goal-to-Business](adr/ADR-015-goal-root.md)
+- [ADR-016: CandidateBusinessPath y BusinessPath](adr/ADR-016-candidate-and-business-path.md)
+- [ADR-017: BusinessPath y OpportunityScenario](adr/ADR-017-business-path-opportunity-scenario.md)
+- [ADR-018: GoalContextSnapshot inmutable](adr/ADR-018-goal-context-snapshot.md)
+- [ADR-019: PathAssessment multidimensional](adr/ADR-019-multidimensional-path-assessment.md)
+- [ADR-020: Opportunity Graph no canónico](adr/ADR-020-opportunity-graph-projection.md)
+- [ADR-021: EvidenceRelation trazable](adr/ADR-021-evidence-relation.md)
+- [ADR-022: Goal-to-Business como orquestador](adr/ADR-022-goal-to-business-orchestrator.md)
+- [ADR-023: Opportunity Matching opt-in](adr/ADR-023-opportunity-matching-opt-in.md)
 
 ## Pilotos
 
