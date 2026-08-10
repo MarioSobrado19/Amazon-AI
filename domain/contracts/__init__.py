@@ -12,6 +12,7 @@ from domain.contracts.business_model_dimension_evaluation import (
 from domain.contracts.marketplace_catalog_result import MarketplaceCatalogResult
 from domain.contracts.marketplace_catalog_issue import MarketplaceCatalogIssue
 from domain.contracts.opportunity_scenario_result import OpportunityScenarioResult
+from domain.contracts.goal_to_business_request import GoalToBusinessRequest
 
 __all__ = [
     "AnalysisResult",
@@ -20,6 +21,7 @@ __all__ = [
     "BusinessModelContext",
     "BusinessModelDimensionEvaluation",
     "DecisionRecommendation",
+    "GoalToBusinessRequest",
     "MarketplaceCatalogResult",
     "MarketplaceCatalogIssue",
     "OpportunityResult",

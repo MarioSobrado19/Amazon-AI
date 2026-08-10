@@ -7,12 +7,14 @@ from domain.enums.risk_level import RiskLevel
 from domain.enums.freshness_status import FreshnessStatus
 from domain.enums.operational_load import OperationalLoad
 from domain.enums.verification_status import VerificationStatus
+from domain.enums.information_source import InformationSource
 
 __all__ = [
     "ConfidenceLevel",
     "DecisionState",
     "EvidenceType",
     "FreshnessStatus",
+    "InformationSource",
     "OperationalLoad",
     "RiskLevel",
     "VerificationStatus",

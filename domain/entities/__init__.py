@@ -8,6 +8,7 @@ from domain.entities.business_model import BusinessModel
 from domain.entities.marketplace import Marketplace
 from domain.entities.marketplace_condition_snapshot import MarketplaceConditionSnapshot
 from domain.entities.opportunity_scenario import OpportunityScenario
+from domain.entities.objective import Objective
 
 __all__ = [
     "BusinessModel",
@@ -15,6 +16,7 @@ __all__ = [
     "MarketplaceConditionSnapshot",
     "Opportunity",
     "OpportunityScenario",
+    "Objective",
     "Product",
     "Recommendation",
     "Result",
