@@ -13,6 +13,9 @@ from domain.contracts.marketplace_catalog_result import MarketplaceCatalogResult
 from domain.contracts.marketplace_catalog_issue import MarketplaceCatalogIssue
 from domain.contracts.opportunity_scenario_result import OpportunityScenarioResult
 from domain.contracts.goal_to_business_request import GoalToBusinessRequest
+from domain.contracts.candidate_business_path import CandidateBusinessPath
+from domain.contracts.goal_to_business_result import GoalToBusinessResult
+from domain.contracts.path_assessment import PathAssessment, PathDimensionAssessment
 
 __all__ = [
     "AnalysisResult",
@@ -22,6 +25,10 @@ __all__ = [
     "BusinessModelDimensionEvaluation",
     "DecisionRecommendation",
     "GoalToBusinessRequest",
+    "CandidateBusinessPath",
+    "GoalToBusinessResult",
+    "PathAssessment",
+    "PathDimensionAssessment",
     "MarketplaceCatalogResult",
     "MarketplaceCatalogIssue",
     "OpportunityResult",

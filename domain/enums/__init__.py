@@ -8,9 +8,11 @@ from domain.enums.freshness_status import FreshnessStatus
 from domain.enums.operational_load import OperationalLoad
 from domain.enums.verification_status import VerificationStatus
 from domain.enums.information_source import InformationSource
+from domain.enums.candidate_path_state import CandidatePathState
 
 __all__ = [
     "ConfidenceLevel",
+    "CandidatePathState",
     "DecisionState",
     "EvidenceType",
     "FreshnessStatus",
