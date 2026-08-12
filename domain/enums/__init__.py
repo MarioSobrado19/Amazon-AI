@@ -9,15 +9,19 @@ from domain.enums.operational_load import OperationalLoad
 from domain.enums.verification_status import VerificationStatus
 from domain.enums.information_source import InformationSource
 from domain.enums.candidate_path_state import CandidatePathState
+from domain.enums.business_path_state import BusinessPathState
+from domain.enums.path_promotion_action import PathPromotionAction
 
 __all__ = [
     "ConfidenceLevel",
     "CandidatePathState",
+    "BusinessPathState",
     "DecisionState",
     "EvidenceType",
     "FreshnessStatus",
     "InformationSource",
     "OperationalLoad",
+    "PathPromotionAction",
     "RiskLevel",
     "VerificationStatus",
 ]

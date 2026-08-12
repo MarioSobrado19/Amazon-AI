@@ -9,9 +9,11 @@ from domain.entities.marketplace import Marketplace
 from domain.entities.marketplace_condition_snapshot import MarketplaceConditionSnapshot
 from domain.entities.opportunity_scenario import OpportunityScenario
 from domain.entities.objective import Objective
+from domain.entities.business_path import BusinessPath
 
 __all__ = [
     "BusinessModel",
+    "BusinessPath",
     "Marketplace",
     "MarketplaceConditionSnapshot",
     "Opportunity",

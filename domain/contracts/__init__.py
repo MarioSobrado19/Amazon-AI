@@ -16,10 +16,12 @@ from domain.contracts.goal_to_business_request import GoalToBusinessRequest
 from domain.contracts.candidate_business_path import CandidateBusinessPath
 from domain.contracts.goal_to_business_result import GoalToBusinessResult
 from domain.contracts.path_assessment import PathAssessment, PathDimensionAssessment
+from domain.contracts.business_path_promotion_result import BusinessPathPromotionResult
 
 __all__ = [
     "AnalysisResult",
     "BusinessModelAssessment",
+    "BusinessPathPromotionResult",
     "BusinessModelComparisonResult",
     "BusinessModelContext",
     "BusinessModelDimensionEvaluation",
