@@ -11,6 +11,8 @@ from domain.enums.information_source import InformationSource
 from domain.enums.candidate_path_state import CandidatePathState
 from domain.enums.business_path_state import BusinessPathState
 from domain.enums.path_promotion_action import PathPromotionAction
+from domain.enums.graph_node_type import GraphNodeType
+from domain.enums.evidence_relation_type import EvidenceRelationType
 
 __all__ = [
     "ConfidenceLevel",
@@ -24,4 +26,6 @@ __all__ = [
     "PathPromotionAction",
     "RiskLevel",
     "VerificationStatus",
+    "GraphNodeType",
+    "EvidenceRelationType",
 ]

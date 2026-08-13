@@ -17,6 +17,8 @@ from domain.contracts.candidate_business_path import CandidateBusinessPath
 from domain.contracts.goal_to_business_result import GoalToBusinessResult
 from domain.contracts.path_assessment import PathAssessment, PathDimensionAssessment
 from domain.contracts.business_path_promotion_result import BusinessPathPromotionResult
+from domain.contracts.evidence_relation import EvidenceRelation
+from domain.contracts.opportunity_graph_snapshot import OpportunityGraphSnapshot
 
 __all__ = [
     "AnalysisResult",
@@ -35,4 +37,6 @@ __all__ = [
     "MarketplaceCatalogIssue",
     "OpportunityResult",
     "OpportunityScenarioResult",
+    "EvidenceRelation",
+    "OpportunityGraphSnapshot",
 ]

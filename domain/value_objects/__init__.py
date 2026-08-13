@@ -9,6 +9,7 @@ from domain.value_objects.constraint_declaration import ConstraintDeclaration
 from domain.value_objects.goal_context_snapshot import GoalContextSnapshot
 from domain.value_objects.preference_declaration import PreferenceDeclaration
 from domain.value_objects.resource_availability import ResourceAvailability
+from domain.value_objects.domain_node_reference import DomainNodeReference
 
 __all__ = [
     "CapabilityDeclaration",
@@ -20,4 +21,5 @@ __all__ = [
     "PreferenceDeclaration",
     "Region",
     "ResourceAvailability",
+    "DomainNodeReference",
 ]
