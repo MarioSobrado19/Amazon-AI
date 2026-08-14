@@ -10,6 +10,8 @@ from domain.value_objects.goal_context_snapshot import GoalContextSnapshot
 from domain.value_objects.preference_declaration import PreferenceDeclaration
 from domain.value_objects.resource_availability import ResourceAvailability
 from domain.value_objects.domain_node_reference import DomainNodeReference
+from domain.value_objects.research_need import ResearchNeed
+from domain.value_objects.research_question import ResearchQuestion
 
 __all__ = [
     "CapabilityDeclaration",
@@ -22,4 +24,6 @@ __all__ = [
     "Region",
     "ResourceAvailability",
     "DomainNodeReference",
+    "ResearchNeed",
+    "ResearchQuestion",
 ]

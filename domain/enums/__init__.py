@@ -13,6 +13,10 @@ from domain.enums.business_path_state import BusinessPathState
 from domain.enums.path_promotion_action import PathPromotionAction
 from domain.enums.graph_node_type import GraphNodeType
 from domain.enums.evidence_relation_type import EvidenceRelationType
+from domain.enums.investigation_status import InvestigationStatus
+from domain.enums.research_category import ResearchCategory
+from domain.enums.research_question_status import ResearchQuestionStatus
+from domain.enums.conflict_resolution_status import ConflictResolutionStatus
 
 __all__ = [
     "ConfidenceLevel",
@@ -28,4 +32,8 @@ __all__ = [
     "VerificationStatus",
     "GraphNodeType",
     "EvidenceRelationType",
+    "InvestigationStatus",
+    "ResearchCategory",
+    "ResearchQuestionStatus",
+    "ConflictResolutionStatus",
 ]

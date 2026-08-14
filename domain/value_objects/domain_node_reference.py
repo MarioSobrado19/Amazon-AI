@@ -6,37 +6,10 @@ from domain.entities._validation import optional_text, required_text
 from domain.enums import GraphNodeType
 from domain.exceptions import DomainValidationError
 from domain.value_objects.frozen_mapping import FrozenMapping
+from domain.value_objects.sensitive_data import contains_sensitive_key
 
 
 _NODE_NAMESPACE = UUID("1e649930-3bd3-48ea-bd64-479bcfbb75e5")
-_SENSITIVE_FRAGMENTS = (
-    "email",
-    "password",
-    "secret",
-    "token",
-    "credential",
-    "apikey",
-    "authorization",
-    "bearer",
-)
-
-
-def _normalized_key(value):
-    return "".join(character for character in value.lower() if character.isalnum())
-
-
-def _contains_sensitive_key(value):
-    if isinstance(value, FrozenMapping):
-        return any(
-            any(fragment in _normalized_key(key) for fragment in _SENSITIVE_FRAGMENTS)
-            or _contains_sensitive_key(nested)
-            for key, nested in value.items
-        )
-    if isinstance(value, tuple):
-        return any(_contains_sensitive_key(item) for item in value)
-    return False
-
-
 def deterministic_node_id(node_type, domain_id, version=None):
     payload = json.dumps(
         {"type": node_type.value, "domain_id": domain_id, "version": version},
@@ -65,7 +38,7 @@ class DomainNodeReference:
         metadata = self.metadata
         if not isinstance(metadata, FrozenMapping):
             metadata = FrozenMapping.from_mapping(metadata)
-        if _contains_sensitive_key(metadata):
+        if contains_sensitive_key(metadata):
             raise DomainValidationError("metadata no puede contener datos sensibles.")
         expected = deterministic_node_id(self.node_type, domain_id, version)
         if self.node_id is not None and self.node_id != expected:

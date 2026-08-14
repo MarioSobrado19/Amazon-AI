@@ -19,6 +19,8 @@ from domain.contracts.path_assessment import PathAssessment, PathDimensionAssess
 from domain.contracts.business_path_promotion_result import BusinessPathPromotionResult
 from domain.contracts.evidence_relation import EvidenceRelation
 from domain.contracts.opportunity_graph_snapshot import OpportunityGraphSnapshot
+from domain.contracts.evidence_conflict import EvidenceConflict
+from domain.contracts.research_assessment import ResearchAssessment
 
 __all__ = [
     "AnalysisResult",
@@ -39,4 +41,6 @@ __all__ = [
     "OpportunityScenarioResult",
     "EvidenceRelation",
     "OpportunityGraphSnapshot",
+    "EvidenceConflict",
+    "ResearchAssessment",
 ]

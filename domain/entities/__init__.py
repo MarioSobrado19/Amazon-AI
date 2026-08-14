@@ -10,6 +10,9 @@ from domain.entities.marketplace_condition_snapshot import MarketplaceConditionS
 from domain.entities.opportunity_scenario import OpportunityScenario
 from domain.entities.objective import Objective
 from domain.entities.business_path import BusinessPath
+from domain.entities.investigation import Investigation
+from domain.entities.evidence_record import EvidenceRecord
+from domain.entities.research_finding import ResearchFinding
 
 __all__ = [
     "BusinessModel",
@@ -22,4 +25,7 @@ __all__ = [
     "Product",
     "Recommendation",
     "Result",
+    "Investigation",
+    "EvidenceRecord",
+    "ResearchFinding",
 ]

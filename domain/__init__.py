@@ -11,6 +11,8 @@ from domain.contracts import (
     MarketplaceCatalogIssue,
     OpportunityResult,
     OpportunityScenarioResult,
+    EvidenceConflict,
+    ResearchAssessment,
 )
 from domain.entities import (
     BusinessModel,
@@ -21,6 +23,9 @@ from domain.entities import (
     Product,
     Recommendation,
     Result,
+    Investigation,
+    EvidenceRecord,
+    ResearchFinding,
 )
 from domain.enums import (
     ConfidenceLevel,
@@ -30,9 +35,15 @@ from domain.enums import (
     OperationalLoad,
     RiskLevel,
     VerificationStatus,
+    InvestigationStatus,
+    ResearchCategory,
+    ResearchQuestionStatus,
+    ConflictResolutionStatus,
 )
 from domain.exceptions import DomainError, DomainValidationError
-from domain.value_objects import FrozenMapping, Money, Percentage, Region
+from domain.value_objects import (
+    FrozenMapping, Money, Percentage, Region, ResearchNeed, ResearchQuestion,
+)
 
 __all__ = [
     "AnalysisResult",
@@ -66,4 +77,15 @@ __all__ = [
     "Result",
     "RiskLevel",
     "VerificationStatus",
+    "Investigation",
+    "EvidenceRecord",
+    "ResearchFinding",
+    "EvidenceConflict",
+    "ResearchAssessment",
+    "InvestigationStatus",
+    "ResearchCategory",
+    "ResearchQuestionStatus",
+    "ConflictResolutionStatus",
+    "ResearchNeed",
+    "ResearchQuestion",
 ]
