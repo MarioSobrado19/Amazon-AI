@@ -6,10 +6,12 @@ from application.ports.marketplace_adapter import (
     MarketplaceAdapterTimeout,
     MarketplaceAdapterUnavailable,
 )
+from application.ports.research_capability import ResearchCapability
 
 __all__ = [
     "MarketplaceAdapter",
     "MarketplaceAdapterError",
     "MarketplaceAdapterTimeout",
     "MarketplaceAdapterUnavailable",
+    "ResearchCapability",
 ]
