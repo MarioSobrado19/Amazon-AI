@@ -6,6 +6,7 @@
 - [Adaptación del Opportunity Engine](domain/OPPORTUNITY_ADAPTER.md)
 - [Arquitectura de Marketplace y modelos operativos](architecture/MARKETPLACE_BUSINESS_MODEL_ARCHITECTURE.md)
 - [Arquitectura Goal-to-Business y Opportunity Graph](architecture/GOAL_TO_BUSINESS_OPPORTUNITY_GRAPH_ARCHITECTURE.md)
+- [Arquitectura de orquestación de investigación](architecture/RESEARCH_ORCHESTRATION_ARCHITECTURE.md)
 
 ## Integraciones
 
@@ -36,6 +37,15 @@
 - [ADR-021: EvidenceRelation trazable](adr/ADR-021-evidence-relation.md)
 - [ADR-022: Goal-to-Business como orquestador](adr/ADR-022-goal-to-business-orchestrator.md)
 - [ADR-023: Opportunity Matching opt-in](adr/ADR-023-opportunity-matching-opt-in.md)
+- [ADR-024: Research Orchestrator coordina, no investiga](adr/ADR-024-research-orchestrator-coordinator.md)
+- [ADR-025: ResearchPlan y ResearchTask](adr/ADR-025-research-plan-task-contracts.md)
+- [ADR-026: Identidad semántica y ejecución](adr/ADR-026-research-semantic-execution-identity.md)
+- [ADR-027: Reutilización de evidencia](adr/ADR-027-research-evidence-reuse.md)
+- [ADR-028: DAG de tareas de investigación](adr/ADR-028-research-task-dag.md)
+- [ADR-029: Fallos parciales](adr/ADR-029-research-partial-failures.md)
+- [ADR-030: Freshness delegada](adr/ADR-030-research-freshness-delegation.md)
+- [ADR-031: Aislamiento de evidencia](adr/ADR-031-research-evidence-isolation.md)
+- [ADR-032: ResearchCapability ports](adr/ADR-032-research-capability-ports.md)
 
 ## Pilotos
 
