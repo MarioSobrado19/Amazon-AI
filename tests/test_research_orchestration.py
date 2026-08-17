@@ -36,6 +36,11 @@ def plan_for(assessment=None, caps=None, accesses=(), at=NOW):
     )
 
 
+def demand_question_for(assessment):
+    need = next(item for item in assessment.needs if item.category is ResearchCategory.DEMAND)
+    return next(item for item in assessment.questions if item.research_need_id == need.need_id)
+
+
 class ResearchModelTests(unittest.TestCase):
     def test_todos_los_estados_contractuales_existen(self):
         self.assertEqual({item.value for item in ResearchTaskState}, {
@@ -150,7 +155,8 @@ class PlanningTests(unittest.TestCase):
         # Research Foundation removes a satisfied need; reintroduce its original need/question
         baseline = assess()
         assessment = replace(assessment, needs=baseline.needs, questions=baseline.questions)
-        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PROJECT_SCOPED, "project-a")
+        demand_question = demand_question_for(baseline)
+        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PROJECT_SCOPED, "project-a", applicable_question_ids=(demand_question.question_id,))
         demand = next(task for task in plan_for(assessment, accesses=(access,)).tasks if task.category is ResearchCategory.DEMAND)
         self.assertEqual(demand.state, ResearchTaskState.SKIPPED_REUSED)
         self.assertEqual(demand.reusable_evidence_ids, (record.evidence_id,))
@@ -165,7 +171,8 @@ class PlanningTests(unittest.TestCase):
         for record in variants:
             with self.subTest(record=record.evidence_type, freshness=record.freshness):
                 assessed = replace(assess((record,)), needs=baseline.needs, questions=baseline.questions)
-                access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE)
+                demand_question = demand_question_for(baseline)
+                access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE, applicable_question_ids=(demand_question.question_id,))
                 demand = next(task for task in plan_for(assessed, accesses=(access,)).tasks if task.category is ResearchCategory.DEMAND)
                 self.assertNotEqual(demand.state, ResearchTaskState.SKIPPED_REUSED)
 
@@ -175,7 +182,7 @@ class PlanningTests(unittest.TestCase):
         record = evidence(kind=EvidenceType.DATA, verification=VerificationStatus.VERIFIED)
         foreign_region = replace(record, region=Region("CA"))
         assessed = replace(assess((foreign_region,)), needs=baseline.needs, questions=baseline.questions)
-        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE)
+        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE, applicable_question_ids=(question.question_id,))
         task = next(item for item in plan_for(assessed, accesses=(access,)).tasks if item.research_need_id == question.research_need_id)
         self.assertNotEqual(task.state, ResearchTaskState.SKIPPED_REUSED)
 
@@ -183,28 +190,32 @@ class PlanningTests(unittest.TestCase):
         record = evidence(kind=EvidenceType.DATA, verification=VerificationStatus.VERIFIED)
         baseline = assess()
         assessed = replace(assess((record,)), needs=baseline.needs, questions=baseline.questions)
-        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PRIVATE, "project-b")
+        demand_question = demand_question_for(baseline)
+        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PRIVATE, "project-b", applicable_question_ids=(demand_question.question_id,))
         self.assertFalse(any(task.state is ResearchTaskState.SKIPPED_REUSED for task in plan_for(assessed, accesses=(access,)).tasks))
 
     def test_evidencia_privada_mismo_scope_si_reutiliza(self):
         record = evidence(kind=EvidenceType.DATA, verification=VerificationStatus.VERIFIED)
         baseline = assess()
         assessed = replace(assess((record,)), needs=baseline.needs, questions=baseline.questions)
-        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PRIVATE, "project-a")
+        demand_question = demand_question_for(baseline)
+        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PRIVATE, "project-a", applicable_question_ids=(demand_question.question_id,))
         self.assertTrue(any(task.state is ResearchTaskState.SKIPPED_REUSED for task in plan_for(assessed, accesses=(access,)).tasks))
 
     def test_project_scoped_no_cruza_proyecto(self):
         record = evidence(kind=EvidenceType.DATA, verification=VerificationStatus.VERIFIED)
         baseline = assess()
         assessed = replace(assess((record,)), needs=baseline.needs, questions=baseline.questions)
-        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PROJECT_SCOPED, "project-b")
+        demand_question = demand_question_for(baseline)
+        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PROJECT_SCOPED, "project-b", applicable_question_ids=(demand_question.question_id,))
         self.assertFalse(any(task.state is ResearchTaskState.SKIPPED_REUSED for task in plan_for(assessed, accesses=(access,)).tasks))
 
     def test_public_reusable_cruza_scope(self):
         record = evidence(kind=EvidenceType.DATA, verification=VerificationStatus.VERIFIED)
         baseline = assess()
         assessed = replace(assess((record,)), needs=baseline.needs, questions=baseline.questions)
-        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE)
+        demand_question = demand_question_for(baseline)
+        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE, applicable_question_ids=(demand_question.question_id,))
         self.assertTrue(any(task.state is ResearchTaskState.SKIPPED_REUSED for task in plan_for(assessed, accesses=(access,)).tasks))
 
     def test_periodo_distinto_no_se_reutiliza(self):
@@ -217,7 +228,8 @@ class PlanningTests(unittest.TestCase):
             for item in baseline.questions
         )
         assessed = replace(assess((record,)), needs=baseline.needs, questions=updated_questions)
-        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE, time_scope="otro-periodo")
+        demand_question = demand_question_for(assessed)
+        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE, time_scope="otro-periodo", applicable_question_ids=(demand_question.question_id,))
         demand = next(item for item in plan_for(assessed, accesses=(access,)).tasks if item.category is ResearchCategory.DEMAND)
         self.assertNotEqual(demand.state, ResearchTaskState.SKIPPED_REUSED)
 
@@ -234,7 +246,8 @@ class PlanningTests(unittest.TestCase):
             for item in baseline.questions
         )
         assessed = replace(assess((record,)), needs=baseline.needs, questions=updated_questions)
-        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE)
+        demand_question = demand_question_for(assessed)
+        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE, applicable_question_ids=(demand_question.question_id,))
         demand = next(item for item in plan_for(assessed, accesses=(access,)).tasks if item.category is ResearchCategory.DEMAND)
         self.assertNotEqual(demand.state, ResearchTaskState.SKIPPED_REUSED)
 
@@ -250,7 +263,8 @@ class PlanningTests(unittest.TestCase):
         record = evidence(kind=EvidenceType.DATA, verification=VerificationStatus.UNVERIFIED)
         baseline = assess()
         assessed = replace(assess((record,)), needs=baseline.needs, questions=baseline.questions)
-        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE)
+        demand_question = demand_question_for(baseline)
+        access = EvidenceAccess(record.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE, applicable_question_ids=(demand_question.question_id,))
         self.assertFalse(any(task.state is ResearchTaskState.SKIPPED_REUSED for task in plan_for(assessed, accesses=(access,)).tasks))
 
     def test_conflicto_activo_impide_reutilizacion(self):
@@ -260,7 +274,8 @@ class PlanningTests(unittest.TestCase):
         baseline = assess()
         assessed = assess((first, second))
         assessed = replace(assessed, needs=baseline.needs, questions=baseline.questions)
-        accesses = (EvidenceAccess(first.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE), EvidenceAccess(second.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE))
+        demand_question = demand_question_for(baseline)
+        accesses = (EvidenceAccess(first.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE, applicable_question_ids=(demand_question.question_id,)), EvidenceAccess(second.evidence_id, EvidenceVisibility.PUBLIC_REUSABLE, applicable_question_ids=(demand_question.question_id,)))
         self.assertFalse(any(task.state is ResearchTaskState.SKIPPED_REUSED for task in plan_for(assessed, accesses=accesses).tasks))
 
     def test_cambio_material_de_needs_cambia_plan(self):

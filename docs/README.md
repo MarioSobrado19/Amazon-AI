@@ -12,6 +12,7 @@
 
 - [Diseño de integración Amazon US](integrations/AMAZON_US_INTEGRATION_DESIGN.md)
 - [Amazon US Marketplace Conditions Capability V1](integrations/AMAZON_US_MARKETPLACE_CONDITIONS_V1.md)
+- [Wikimedia Pageviews Demand Interest Capability V1](integrations/WIKIMEDIA_PAGEVIEWS_DEMAND_INTEREST_V1.md)
 
 ## Architecture Decision Records
 

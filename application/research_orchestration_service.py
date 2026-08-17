@@ -39,6 +39,8 @@ def _is_applicable(evidence, need, question, access_by_id, scope_id, conflicting
         and (question.region is None or evidence.region == question.region)
         and (question.marketplace_id is None or evidence.marketplace_id == question.marketplace_id)
         and (question.time_scope is None or (access is not None and access.time_scope == question.time_scope))
+        and access is not None
+        and question.question_id in access.applicable_question_ids
         and _is_accessible(evidence, access_by_id, scope_id)
     )
 

@@ -73,6 +73,7 @@ class EvidenceAccess:
     visibility: EvidenceVisibility
     owner_scope_id: str | None = None
     time_scope: str | None = None
+    applicable_question_ids: tuple[str, ...] = ()
 
     def __post_init__(self):
         object.__setattr__(self, "evidence_id", required_text(self.evidence_id, "evidence_id"))
@@ -80,11 +81,12 @@ class EvidenceAccess:
             raise DomainValidationError("visibility debe ser válida.")
         object.__setattr__(self, "owner_scope_id", optional_text(self.owner_scope_id, "owner_scope_id"))
         object.__setattr__(self, "time_scope", optional_text(self.time_scope, "time_scope"))
+        object.__setattr__(self, "applicable_question_ids", tuple(sorted(set(text_tuple(self.applicable_question_ids, "applicable_question_ids")))))
         if self.visibility is not EvidenceVisibility.PUBLIC_REUSABLE and not self.owner_scope_id:
             raise DomainValidationError("La evidencia no pública requiere owner_scope_id.")
 
     def to_dict(self):
-        return {"evidence_id": self.evidence_id, "visibility": self.visibility.value, "owner_scope_id": self.owner_scope_id, "time_scope": self.time_scope}
+        return {"evidence_id": self.evidence_id, "visibility": self.visibility.value, "owner_scope_id": self.owner_scope_id, "time_scope": self.time_scope, "applicable_question_ids": list(self.applicable_question_ids)}
 
 
 @dataclass(frozen=True, slots=True)
