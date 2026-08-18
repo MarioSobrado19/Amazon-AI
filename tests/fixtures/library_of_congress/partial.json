@@ -1,0 +1,13 @@
+{
+  "pagination": {"total": 2},
+  "results": [
+    {
+      "id": "https://www.loc.gov/item/example-001/",
+      "title": "Headphone Technology",
+      "date": "2020",
+      "original_format": ["book"],
+      "subject": ["Headphones"]
+    },
+    {"id": "https://example.com/not-trusted", "title": "Untrusted record"}
+  ]
+}
