@@ -15,6 +15,7 @@
 - [Wikimedia Pageviews Demand Interest Capability V1](integrations/WIKIMEDIA_PAGEVIEWS_DEMAND_INTEREST_V1.md)
 - [Library of Congress Documentary Presence Experiment](integrations/LIBRARY_OF_CONGRESS_DOCUMENTARY_PRESENCE_EXPERIMENT.md)
 - [Evaluación de fuentes comerciales para Competition Research V1](integrations/COMPETITION_COMMERCIAL_SOURCE_EVALUATION.md)
+- [Caso de Estudio Oriva #0001](case-studies/oriva-0001/README.md)
 
 ## Architecture Decision Records
 

@@ -1,0 +1,45 @@
+{
+  "schema": "oriva-case-experiment-metrics/1.0",
+  "case_study_id": "ORIVA-CASE-0001",
+  "version": 1,
+  "measured_at": "2026-08-19T00:55:12-04:00",
+  "product_learning": {
+    "time_objective_to_first_investigable_business_path": {"value": null, "unit": "elapsed_time", "status": "not_reached"},
+    "research_needs_detected": {"value": 10, "unit": "needs", "status": "planned"},
+    "coverage_by_dimension": {
+      "client_context": "missing",
+      "opportunity_identity": "missing",
+      "marketplace_conditions_and_fees": "partial_capability_not_executed",
+      "commercial_demand": "missing_indirect_attention_capability_not_substitute",
+      "commercial_competition": "blocked_external_dependency",
+      "supplier_and_landed_cost": "missing",
+      "fulfillment_and_logistics": "missing",
+      "restrictions_and_regulation": "missing",
+      "unit_economics": "blocked_by_inputs",
+      "working_capital_and_scalability": "blocked_by_inputs"
+    },
+    "global_coverage_score": null,
+    "real_sources_required": ["opportunity discovery", "US commercial demand", "commercial competition", "supplier", "complete fees and fulfillment", "restrictions"],
+    "manual_work_required": ["clarify client context", "approve sources", "review terms", "resolve candidate identity", "review decisions"],
+    "decisions_oriva_explained": ["Initial HOLD due to material missing evidence"],
+    "decisions_requiring_human": ["source approvals", "BusinessPath promotion", "any account/contact/spend/action", "GO/HOLD/STOP binding decision"],
+    "source_errors": [],
+    "most_conclusion-changing_data": []
+  },
+  "real_world_results": {
+    "capital_at_risk_usd": "0.00",
+    "capital_spent_usd": "0.00",
+    "real_revenue_usd": "0.00",
+    "real_profit_usd": "0.00",
+    "real_sales_count": 0,
+    "listings_created": 0,
+    "supplier_contacts": 0,
+    "status": "no_commercial_action_authorized"
+  },
+  "measurement_rules": [
+    "Never aggregate dimension coverage into an opaque global score.",
+    "Only completed real events update real_world_results.",
+    "Simulation, estimate, Sandbox, fixture and backtest metrics stay in separate namespaces.",
+    "Source failures are counted separately and do not reduce a commercial signal."
+  ]
+}

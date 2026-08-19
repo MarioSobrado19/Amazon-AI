@@ -1,0 +1,128 @@
+{
+  "schema": "oriva-case-research-plan/1.0",
+  "case_study_id": "ORIVA-CASE-0001",
+  "version": 1,
+  "created_at": "2026-08-19T00:55:12-04:00",
+  "state": "HOLD",
+  "binding_decision": false,
+  "candidate_generation": {
+    "status": "BLOCKED",
+    "reason": "Current real capabilities cannot establish product identity, US commercial demand, commercial competition, suppliers and costs without inventing material data.",
+    "output": "evidence_acquisition_plan"
+  },
+  "research_needs": [
+    {
+      "id": "RN-0001-context",
+      "dimension": "client_context",
+      "question": "¿Cuánto tiempo semanal, almacenamiento, trabajo físico y complejidad operativa están realmente disponibles?",
+      "classification": "NO_DATA",
+      "blocking": true,
+      "method": "human clarification",
+      "capability": "none_required",
+      "next_step": "Obtain declarations without converting preferences into constraints."
+    },
+    {
+      "id": "RN-0001-discovery-source",
+      "dimension": "opportunity_identity",
+      "question": "¿Qué fuentes comerciales autorizadas permiten descubrir rutas candidatas sin sesgo previo de marketplace?",
+      "classification": "NO_DATA",
+      "blocking": true,
+      "method": "source evaluation and terms review",
+      "capability": "GAP",
+      "next_step": "Approve at least one legitimate discovery source before generating candidates."
+    },
+    {
+      "id": "RN-0001-marketplace",
+      "dimension": "marketplace_conditions_and_fees",
+      "question": "¿Qué marketplaces admiten la ruta y cuáles son todos sus fees y condiciones aplicables?",
+      "classification": "NO_DATA",
+      "blocking": true,
+      "method": "official terms, fee schedules and approved capabilities",
+      "capability": "PARTIAL: amazon-us-marketplace-conditions-v1",
+      "next_step": "Use Amazon capability only after Amazon is a candidate; acquire category and fulfillment fees separately."
+    },
+    {
+      "id": "RN-0001-demand",
+      "dimension": "commercial_demand",
+      "question": "¿Qué evidencia comercial vigente demuestra transacciones o intención de compra en US para el candidato exacto?",
+      "classification": "NO_DATA",
+      "blocking": true,
+      "method": "approved commercial data source",
+      "capability": "GAP",
+      "next_step": "Do not substitute Wikimedia pageviews; it may remain a separate indirect attention signal."
+    },
+    {
+      "id": "RN-0001-competition",
+      "dimension": "commercial_competition",
+      "question": "¿Qué oferta comercial observable existe para la consulta/categoría exacta en cada marketplace candidato?",
+      "classification": "NO_DATA",
+      "blocking": true,
+      "method": "approved marketplace API or authorized manual observation",
+      "capability": "BLOCKED: Sprint 41 eBay external approval/review",
+      "next_step": "Keep eBay disconnected until Sprint 41 is approved and reviewed."
+    },
+    {
+      "id": "RN-0001-supplier",
+      "dimension": "supplier_and_landed_cost",
+      "question": "¿Qué proveedor autorizado ofrece el artículo exacto, con MOQ, precio, lead time, términos y coste puesto?",
+      "classification": "NO_DATA",
+      "blocking": true,
+      "method": "authorized supplier data or later approved quotation",
+      "capability": "GAP",
+      "next_step": "No supplier contact in this phase; first approve source/method."
+    },
+    {
+      "id": "RN-0001-logistics",
+      "dimension": "fulfillment_and_logistics",
+      "question": "¿Qué flujo, costes, tiempos, almacenamiento y devoluciones exige cada ruta?",
+      "classification": "NO_DATA",
+      "blocking": true,
+      "method": "official fulfillment schedules plus route-specific operational mapping",
+      "capability": "GAP",
+      "next_step": "Acquire after product dimensions, marketplace and model are known."
+    },
+    {
+      "id": "RN-0001-restrictions",
+      "dimension": "restrictions_and_regulation",
+      "question": "¿Qué restricciones legales, regulatorias, de seguridad, marca y plataforma aplican al candidato exacto?",
+      "classification": "NO_DATA",
+      "blocking": true,
+      "method": "official regulator and marketplace sources",
+      "capability": "GAP",
+      "next_step": "Research per candidate; no generic clearance."
+    },
+    {
+      "id": "RN-0001-economics",
+      "dimension": "unit_economics",
+      "question": "¿Cuál es la contribución unitaria trazable y su sensibilidad?",
+      "classification": "NO_DATA",
+      "blocking": true,
+      "dependencies": ["RN-0001-marketplace", "RN-0001-supplier", "RN-0001-logistics"],
+      "method": "reverse_economics_v1",
+      "capability": "method_available_inputs_missing",
+      "next_step": "Return NOT CALCULABLE until all material inputs exist."
+    },
+    {
+      "id": "RN-0001-scale",
+      "dimension": "working_capital_and_scalability",
+      "question": "¿Qué demanda, inventario, reposición, efectivo y capacidad operativa exigirían break-even, USD 1k, 3k y 5k+ netos/mes?",
+      "classification": "NO_DATA",
+      "blocking": true,
+      "dependencies": ["RN-0001-demand", "RN-0001-economics"],
+      "method": "reverse_economics_v1 plus demand and operations evidence",
+      "capability": "method_available_inputs_missing",
+      "next_step": "Calculate only after contribution, demand and replenishment evidence exist."
+    }
+  ],
+  "execution_order": [
+    ["RN-0001-context", "RN-0001-discovery-source"],
+    ["candidate identity only after evidence source approval"],
+    ["RN-0001-marketplace", "RN-0001-demand", "RN-0001-competition", "RN-0001-supplier", "RN-0001-restrictions"],
+    ["RN-0001-logistics"],
+    ["RN-0001-economics"],
+    ["RN-0001-scale"],
+    ["non-binding GO/HOLD/STOP assessment followed by human decision"]
+  ],
+  "current_candidates": [],
+  "current_conclusion": "No legitimate candidate list can be produced from current real evidence."
+}

@@ -1,0 +1,122 @@
+{
+  "schema": "oriva-case-study-spec/1.0",
+  "case_study_id": "ORIVA-CASE-0001",
+  "version": 1,
+  "supersedes_version": null,
+  "frozen_at": "2026-08-19T00:55:12-04:00",
+  "timezone": "America/New_York",
+  "status": "hold_evidence_acquisition",
+  "objective": {
+    "objective_id": "oriva-case-0001-objective",
+    "description": "Investigar una oportunidad real de comercio electrónico desde cero y determinar, sin promesas, si existe evidencia suficiente para avanzar por etapas hacia utilidad recurrente escalable.",
+    "objective_type": "ecommerce_commercial_validation"
+  },
+  "goal_context": {
+    "source": "user_declared",
+    "capital_ceiling": {"amount": "750.00", "currency": "USD"},
+    "capital_committed": {"amount": "0.00", "currency": "USD"},
+    "validation_horizon_days": 90,
+    "region": {"country_code": "US"},
+    "experience": "beginner_intermediate",
+    "category": null,
+    "product": null,
+    "marketplace": null,
+    "business_model": null,
+    "risk_posture": "controlled_capital_preservation_first"
+  },
+  "known_context": [
+    {"classification": "DATA", "statement": "El capital máximo declarado para un experimento posterior es USD 750.", "source": "user_declared"},
+    {"classification": "DATA", "statement": "La región inicial declarada es Estados Unidos.", "source": "user_declared"},
+    {"classification": "DATA", "statement": "No existe autorización para gastar o ejecutar acciones comerciales en esta fase.", "source": "case_mandate"}
+  ],
+  "unknowns": [
+    "available_time_hours_per_week",
+    "specific_experience_and_skills",
+    "storage_space",
+    "logistics_capacity",
+    "category_and_product",
+    "marketplace",
+    "business_model",
+    "legitimate_commercial_demand",
+    "commercial_competition",
+    "supplier_and_moq",
+    "landed_cost",
+    "fulfillment_cost",
+    "category_specific_fees",
+    "returns_and_shrinkage",
+    "advertising_requirements",
+    "regulatory_and_platform_restrictions",
+    "lead_time_and_replenishment_cycle",
+    "working_capital_requirement",
+    "operational_capacity"
+  ],
+  "preferences": [
+    {"id": "prefer-low-physical-work", "statement": "Minimizar trabajo físico cuando sea posible.", "is_hard_constraint": false},
+    {"id": "prefer-low-logistics-complexity", "statement": "Minimizar complejidad logística cuando sea posible.", "is_hard_constraint": false}
+  ],
+  "hard_constraints": [
+    "No exceder USD 750 de capital inicial sin una nueva aprobación humana explícita.",
+    "No gastar, comprar, vender, publicar listings, abrir cuentas, contratar servicios o contactar proveedores en esta fase.",
+    "No usar scraping prohibido ni fuentes incompatibles con términos aplicables.",
+    "No almacenar credenciales, tokens, secretos o PII en Git, documentación, fixtures, logs o reportes.",
+    "No presentar Sandbox, fixtures, simulaciones, estimaciones o backtests como mercado o resultados reales.",
+    "No modificar Opportunity Score ni fórmulas existentes para este caso.",
+    "Toda promoción a BusinessPath y toda acción comercial requieren intervención humana explícita."
+  ],
+  "evaluation_dimensions": [
+    "opportunity_identity",
+    "marketplace_conditions_and_fees",
+    "commercial_demand",
+    "commercial_competition",
+    "supplier_and_landed_cost",
+    "fulfillment_and_logistics",
+    "restrictions_and_regulation",
+    "unit_economics",
+    "working_capital",
+    "operational_capacity",
+    "scalability"
+  ],
+  "economic_milestones": [
+    {"id": "first-transaction", "type": "future_real_event", "target": "first_sale", "guaranteed": false},
+    {"id": "operating-break-even", "type": "scenario", "target": "monthly_net_profit_equals_zero", "guaranteed": false},
+    {"id": "net-1000", "type": "scenario", "monthly_net_profit_usd": "1000.00", "guaranteed": false},
+    {"id": "net-3000", "type": "scenario", "monthly_net_profit_usd": "3000.00", "guaranteed": false},
+    {"id": "net-5000-plus", "type": "ambitious_scenario", "monthly_net_profit_usd": "5000.00", "guaranteed": false}
+  ],
+  "loss_limits": {
+    "current_authorized_loss_usd": "0.00",
+    "future_total_capital_at_risk_ceiling_usd": "750.00",
+    "per_stage_limits": "missing_human_decision",
+    "rule": "No stage may risk capital until its amount, recovery conditions and stop trigger are approved by a human."
+  },
+  "abandonment_criteria": [
+    "Demonstrated legal, platform-policy or safety incompatibility.",
+    "Conservative unit economics are clearly non-viable and no material variable remains unresolved.",
+    "Minimum viable validation requires capital above the approved ceiling.",
+    "Required sourcing or data acquisition would violate applicable terms.",
+    "Operational burden is demonstrably incompatible with a later human-approved hard constraint.",
+    "An essential premise is invalidated by current, verified and applicable evidence."
+  ],
+  "source_policy": {
+    "allowed": [
+      "Official public marketplace and regulator sources within their published terms.",
+      "Approved APIs and existing Oriva capabilities within their exact semantic scope.",
+      "Authorized supplier quotations or documents only after separate human approval.",
+      "Manual observations whose provenance, date, method and limitations are recorded."
+    ],
+    "prohibited": [
+      "Prohibited scraping or circumvention of access controls.",
+      "Credentials or private account data not explicitly authorized.",
+      "Fixtures, Sandbox or synthetic values represented as live commercial evidence.",
+      "Undocumented aggregate scores, invented probabilities or unattributed claims."
+    ]
+  },
+  "language_policy": {
+    "forbidden_claims": ["winning product", "guaranteed", "safe profit", "probability of success"],
+    "required_classifications": ["DATA", "ESTIMATE", "ASSUMPTION", "NO_DATA", "CONFLICT", "TECHNICAL_FAILURE"]
+  },
+  "initial_decision": {
+    "state": "HOLD",
+    "meaning": "Insufficient evidence to select or fund a candidate; proceed only with evidence acquisition that requires no commercial action or spend."
+  }
+}

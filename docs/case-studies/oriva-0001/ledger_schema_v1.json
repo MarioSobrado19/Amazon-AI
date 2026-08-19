@@ -1,0 +1,39 @@
+{
+  "schema": "oriva-case-ledger/1.0",
+  "version": 1,
+  "append_only": true,
+  "chain": ["Hypothesis", "ResearchNeed", "ResearchQuestion", "EvidenceRecord", "Finding", "ConflictOrUncertainty", "DecisionOrNextStep"],
+  "record_fields": {
+    "ledger_record_id": "stable unique id",
+    "record_version": "positive integer",
+    "supersedes_record_id": "nullable prior record id; corrections append",
+    "case_study_id": "ORIVA-CASE-0001",
+    "record_type": "HYPOTHESIS|RESEARCH_NEED|RESEARCH_QUESTION|EVIDENCE|FINDING|CONFLICT|UNCERTAINTY|DECISION|NEXT_STEP|TECHNICAL_FAILURE",
+    "classification": "DATA|ESTIMATE|ASSUMPTION|NO_DATA|CONFLICT|NOT_APPLICABLE",
+    "statement": "neutral claim or question",
+    "subject_type": "objective|candidate_business_path|business_path|opportunity|marketplace|supplier|case_study",
+    "subject_id": "stable subject id",
+    "dimension": "evaluation dimension",
+    "parent_record_ids": "pipe-delimited causal predecessors",
+    "source": "source name or user_declared/system",
+    "source_reference": "nullable safe URL or document id",
+    "observed_at": "nullable timezone-aware instant",
+    "retrieved_at": "nullable timezone-aware instant",
+    "freshness": "current|stale|expired|unknown|not_applicable",
+    "verification": "verified|unverified|conflicted|not_applicable",
+    "limitations": "explicit limitations",
+    "material_change": "what changed after this record",
+    "decision_state": "nullable GO|HOLD|STOP",
+    "decided_by": "human id/role or oriva_system for non-binding next steps",
+    "decision_reason": "nullable reason with criterion",
+    "created_at": "timezone-aware instant"
+  },
+  "immutability_rules": [
+    "Never edit or delete a prior ledger record after evidence acquisition starts.",
+    "Corrections append a new record and set supersedes_record_id.",
+    "Technical failures use TECHNICAL_FAILURE and cannot carry a negative commercial finding.",
+    "Expired evidence remains visible and may be superseded but not erased.",
+    "A decision must reference the records that support it.",
+    "Human decisions identify the human role; Oriva may propose only non-binding next steps."
+  ]
+}
