@@ -7,6 +7,7 @@
 - [Arquitectura de Marketplace y modelos operativos](architecture/MARKETPLACE_BUSINESS_MODEL_ARCHITECTURE.md)
 - [Arquitectura Goal-to-Business y Opportunity Graph](architecture/GOAL_TO_BUSINESS_OPPORTUNITY_GRAPH_ARCHITECTURE.md)
 - [Arquitectura de orquestación de investigación](architecture/RESEARCH_ORCHESTRATION_ARCHITECTURE.md)
+- [Arquitectura Opportunity/Product Discovery V1](architecture/OPPORTUNITY_PRODUCT_DISCOVERY_V1.md)
 
 ## Integraciones
 
@@ -15,6 +16,7 @@
 - [Wikimedia Pageviews Demand Interest Capability V1](integrations/WIKIMEDIA_PAGEVIEWS_DEMAND_INTEREST_V1.md)
 - [Library of Congress Documentary Presence Experiment](integrations/LIBRARY_OF_CONGRESS_DOCUMENTARY_PRESENCE_EXPERIMENT.md)
 - [Evaluación de fuentes comerciales para Competition Research V1](integrations/COMPETITION_COMMERCIAL_SOURCE_EVALUATION.md)
+- [Investigación de fuentes para Opportunity/Product Discovery V1](integrations/OPPORTUNITY_DISCOVERY_SOURCE_RESEARCH_V1.md)
 - [Caso de Estudio Oriva #0001](case-studies/oriva-0001/README.md)
 
 ## Architecture Decision Records
@@ -51,6 +53,7 @@
 - [ADR-030: Freshness delegada](adr/ADR-030-research-freshness-delegation.md)
 - [ADR-031: Aislamiento de evidencia](adr/ADR-031-research-evidence-isolation.md)
 - [ADR-032: ResearchCapability ports](adr/ADR-032-research-capability-ports.md)
+- [ADR-033: Discovery anterior a Opportunity](adr/ADR-033-opportunity-discovery-pre-opportunity-contract.md)
 
 ## Pilotos
 

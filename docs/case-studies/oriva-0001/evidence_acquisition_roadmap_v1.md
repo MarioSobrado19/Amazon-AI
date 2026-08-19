@@ -215,11 +215,16 @@ paralelo sobre cada identidad, antes de Supplier Research y fees completos.
 
 ## Condición concreta para salir del HOLD de adquisición hacia investigación de candidatos
 
-El caso puede pasar a **investigación de candidatos** —no a inversión ni gasto—
-cuando existan: (1) contexto operativo humano suficiente; (2) al menos una fuente
-de discovery legítima, aprobada y revisada en TOS; y (3) una salida fechada que
-identifique una lista pequeña de hipótesis US con producto/categoría/consulta,
-procedencia, cobertura y limitaciones, sin fixtures ni estimaciones presentadas
-como realidad. Cada hipótesis debe crear ResearchNeeds explícitos para demanda,
-competencia, suministro, restricciones y costes. Hasta entonces, el estado sigue
-siendo `HOLD — evidence acquisition` y `current_candidates` permanece vacío.
+El caso puede pasar exactamente a **`HOLD/RESEARCHING — hypotheses identified`**
+—no a inversión ni gasto— cuando existan: (1) contexto operativo humano
+suficiente, con preferencias separadas de restricciones; (2) señales US recientes
+de una fuente macro/category oficial; (3) identidades reales resueltas mediante
+una API de catálogo autorizada y revisada en TOS; (4) un segundo tipo de señal no
+redundante por identidad; y (5) una salida fechada, revisada por humano, de 3–10
+hipótesis con procedencia, cobertura, limitaciones, contradicciones y unknowns,
+sin fixtures ni estimaciones presentadas como realidad. Cada hipótesis debe crear
+ResearchNeeds explícitos para demanda, competencia, suministro, restricciones y
+costes. Hasta entonces, el estado sigue siendo `HOLD — evidence acquisition`.
+Después de la transición, `current_candidates` permanece vacío y capital
+autorizado, gastado y arriesgado continúa en USD 0: una hipótesis no es
+`Opportunity`, `CandidateBusinessPath`, autorización ni recomendación.
