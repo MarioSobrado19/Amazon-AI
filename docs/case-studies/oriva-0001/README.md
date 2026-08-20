@@ -29,6 +29,8 @@ humana explícita ya exigida por la arquitectura.
 
 - `case_spec_v1.json`: condiciones, unknowns, preferencias, restricciones,
   escalones, límites y reglas de fuentes.
+- `case_status_v2.json`: estado vigente del caso, bloqueo externo de eBay y
+  resultado conservador de Discovery V1; conserva `current_candidates` vacío.
 - `decision_policy_v1.md`: semántica y criterios GO/HOLD/STOP.
 - `ledger_schema_v1.json`: cadena auditable y reglas de versionado inmutable.
 - `ledger_v1.csv`: ledger inicial; registra el estado de conocimiento sin

@@ -1,0 +1,36 @@
+{
+  "schema": "oriva-case-study-status/1.0",
+  "case_study_id": "ORIVA-CASE-0001",
+  "version": 2,
+  "supersedes_version": 1,
+  "recorded_at": "2026-08-20T00:46:13-04:00",
+  "status": "hold_evidence_acquisition",
+  "current_candidates": [],
+  "capital": {
+    "future_experiment_ceiling": {"amount": "750.00", "currency": "USD"},
+    "currently_authorized": {"amount": "0.00", "currency": "USD"}
+  },
+  "external_dependencies": [
+    {
+      "provider": "eBay Developer Technical Support",
+      "ticket_id": "260819-000066",
+      "classification": "HUMAN_DECLARED",
+      "state": "pending_official_response",
+      "expected_response_window": "1–2 business days",
+      "production_interpretation": "HOLD — EXTERNAL COMPLIANCE CONFIRMATION PENDING",
+      "controls": [
+        "Sandbox remains technical-only evidence.",
+        "No exemption is assumed.",
+        "No Production credentials or Browse Production calls are authorized.",
+        "Automated or AI support output is not treated as official approval."
+      ]
+    }
+  ],
+  "discovery": {
+    "pipeline_available": true,
+    "real_source_available_without_new_credentials": false,
+    "real_hypotheses": 0,
+    "case_transition": "not_met",
+    "reason": "No legitimate real source currently supplies product identities with sufficient commercial corroboration."
+  }
+}

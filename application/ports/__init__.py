@@ -7,6 +7,7 @@ from application.ports.marketplace_adapter import (
     MarketplaceAdapterUnavailable,
 )
 from application.ports.research_capability import ResearchCapability
+from application.ports.discovery_source import DiscoverySource
 
 __all__ = [
     "MarketplaceAdapter",
@@ -14,4 +15,5 @@ __all__ = [
     "MarketplaceAdapterTimeout",
     "MarketplaceAdapterUnavailable",
     "ResearchCapability",
+    "DiscoverySource",
 ]

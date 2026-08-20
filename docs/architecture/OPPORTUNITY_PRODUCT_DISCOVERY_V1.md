@@ -40,15 +40,15 @@ interest ≠ conversiones; catálogo ≠ oportunidad; precio observado ≠ marge
 La semántica original de fuente se conserva y nunca se normaliza todo a
 `ResearchCategory.DEMAND`.
 
-## Contratos mínimos propuestos
+## Contratos mínimos implementados
 
-No se implementan aún en Domain. Primero se validan en Application para evitar
-contaminar el núcleo con un concepto provisional.
+Se implementan en Application, no en Domain, para validar el concepto
+provisional sin contaminar el núcleo permanente.
 
 ### `DiscoverySignal`
 
 ```text
-signal_id                 UUIDv5(source + source_record + observed_at + method_version)
+signal_id                 UUIDv5(tipo + identidad + fuente + referencia + fecha + método + valor)
 signal_type               enum de la taxonomía anterior
 subject_identity          concepto/categoría/keyword/GTIN/ASIN/UPC cuando exista
 region                    Region | null
@@ -68,7 +68,7 @@ dentro de `EvidenceRecord`, cuyo `subject_id` exige identidad previa.
 ### `OpportunityHypothesis`
 
 ```text
-hypothesis_id             UUIDv5(normalized_identity + region + method_version)
+hypothesis_id             UUIDv5(tipo + identidad normalizada + región + método)
 identity_kind             product | concept | category | keyword
 identity_value            texto/identificador normalizado, nunca inventado
 region                    Region
@@ -138,12 +138,13 @@ clasificación no afirma novedad jurídica ni patentabilidad.
 
 ## Arquitectura incremental
 
-- `application.discovery_models`: contratos efímeros anteriores; Domain queda
-  intacto hasta validar su estabilidad.
+- `application.discovery_models`: contratos efímeros implementados; Domain
+  queda intacto hasta validar su estabilidad.
 - `OpportunityDiscoveryService`: coordina normalización, reglas, diversidad,
   límites, deduplicación y creación de ResearchNeeds; no hace red ni decide.
-- ports futuros separados por capacidad (`CategoryActivitySource`,
-  `CatalogPresenceSource`, `AttentionSource`), no por proveedor.
+- `application.ports.discovery_source.DiscoverySource`: puerto genérico que
+  recibe una solicitud fechada y devuelve señales tipadas o un estado explícito.
+- adapters futuros separados por capacidad/señal, no por proveedor.
 - adapters futuros: Census, Wikimedia existente (adaptado sin renombrarlo como
   demanda), Best Buy y después eBay/Walmart bajo autorización separada.
 - mapper explícito crea `EvidenceRecord` solo cuando existe sujeto estable;
@@ -154,11 +155,12 @@ clasificación no afirma novedad jurídica ni patentabilidad.
 - fallos parciales tipados: `NO_DATA` no es `TECHNICAL_FAILURE`; una fuente caída
   no elimina señales válidas ni rebaja silenciosamente el umbral.
 
-Pruebas siguientes: identidad determinista; orden independiente; prohibición de
-campos; dos señales no redundantes; contradicciones; diversidad y topes;
-preferencia vs restricción; freshness; fallos parciales; mapping EvidenceRecord;
-Domain sin imports de infrastructure/application. Fixtures serán `SYNTHETIC /
-NOT REAL EVIDENCE`; smoke checks reales requerirán aprobación y credenciales.
+La primera suite cubre identidad determinista, deduplicación, prohibición de
+score/ranking, dos señales no redundantes, contradicciones, freshness, fallos
+parciales, asociación con `EvidenceRecord`, inmutabilidad, serialización y el
+contexto del Caso #0001. Los fixtures son `SYNTHETIC / NOT REAL EVIDENCE` y no
+pueden activar `hypotheses_identified`; los smoke checks reales siguen sujetos a
+fuente legítima, autorización y credenciales cuando correspondan.
 
 ## Caso #0001 y condición exacta de transición
 
