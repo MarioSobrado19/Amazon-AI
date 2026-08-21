@@ -17,6 +17,7 @@
 - [Library of Congress Documentary Presence Experiment](integrations/LIBRARY_OF_CONGRESS_DOCUMENTARY_PRESENCE_EXPERIMENT.md)
 - [Evaluación de fuentes comerciales para Competition Research V1](integrations/COMPETITION_COMMERCIAL_SOURCE_EVALUATION.md)
 - [Investigación de fuentes para Opportunity/Product Discovery V1](integrations/OPPORTUNITY_DISCOVERY_SOURCE_RESEARCH_V1.md)
+- [Adquisición de fuente comercial para Discovery V1](integrations/COMMERCIAL_DISCOVERY_SOURCE_ACQUISITION_V1.md)
 - [Caso de Estudio Oriva #0001](case-studies/oriva-0001/README.md)
 
 ## Architecture Decision Records

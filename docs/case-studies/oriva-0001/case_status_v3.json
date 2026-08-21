@@ -1,0 +1,34 @@
+{
+  "schema": "oriva-case-study-status/1.0",
+  "case_study_id": "ORIVA-CASE-0001",
+  "version": 3,
+  "supersedes_version": 2,
+  "recorded_at": "2026-08-20T01:32:24-04:00",
+  "status": "hold_evidence_acquisition",
+  "current_candidates": [],
+  "capital": {
+    "future_experiment_ceiling": {"amount": "750.00", "currency": "USD"},
+    "currently_authorized": {"amount": "0.00", "currency": "USD"},
+    "spent": {"amount": "0.00", "currency": "USD"},
+    "at_risk": {"amount": "0.00", "currency": "USD"}
+  },
+  "discovery": {
+    "source": "USDA FoodData Central — Global Branded Foods Database",
+    "query": "protein bar",
+    "classification": "REAL_CATALOG_PRESENCE_ONLY",
+    "signals_observed": 5,
+    "real_hypotheses_surfaced": 5,
+    "research_ready_hypotheses": 0,
+    "case_transition": "not_met",
+    "reason": "A single catalog-presence signal does not establish commercial corroboration, demand, sales, competition or profitability.",
+    "raw_response_persisted": false
+  },
+  "external_dependencies": [
+    {
+      "provider": "eBay Developer Technical Support",
+      "ticket_id": "260819-000066",
+      "state": "pending_official_response",
+      "production_interpretation": "HOLD — EXTERNAL COMPLIANCE CONFIRMATION PENDING"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "classification": "SYNTHETIC / NOT REAL EVIDENCE",
+  "totalHits": 2,
+  "foods": [
+    {
+      "fdcId": 9000001,
+      "description": "Synthetic Protein Bar, Cocoa",
+      "dataType": "Branded",
+      "gtinUpc": "00000000000001",
+      "publishedDate": "2026-08-01",
+      "brandOwner": "Synthetic Foods LLC",
+      "brandName": "Synthetic Brand",
+      "marketCountry": "US",
+      "foodCategory": "Nutrition Bars",
+      "modifiedDate": "2026-08-02",
+      "dataSource": "SYNTHETIC"
+    },
+    {
+      "fdcId": 9000002,
+      "description": "Synthetic Protein Bar, Berry",
+      "dataType": "Branded",
+      "gtinUpc": "00000000000002",
+      "publishedDate": "2026-08-03",
+      "brandOwner": "Synthetic Foods LLC",
+      "brandName": "Synthetic Brand",
+      "marketCountry": "US",
+      "foodCategory": "Nutrition Bars",
+      "modifiedDate": "2026-08-04",
+      "dataSource": "SYNTHETIC"
+    }
+  ]
+}
