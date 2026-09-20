@@ -20,6 +20,7 @@ class SessionTests(unittest.TestCase):
         self.assertEqual(estado["productos"], [])
         self.assertIsNone(estado["oportunidad_controlada"])
         self.assertIsNone(estado["expediente_oportunidad"])
+        self.assertIsNone(estado["research_workspace"])
 
     def test_guarda_y_confirma_importacion(self):
         estado = {}

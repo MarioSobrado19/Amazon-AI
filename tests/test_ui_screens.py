@@ -3,6 +3,7 @@ import unittest
 from ui.screens import (
     configuration,
     controlled_opportunity,
+    research_workspace,
     preview,
     ready,
     results,
@@ -22,6 +23,7 @@ class ScreenImportTests(unittest.TestCase):
             configuration,
             results,
             controlled_opportunity,
+            research_workspace,
         )
 
         for pantalla in pantallas:

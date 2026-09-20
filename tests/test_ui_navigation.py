@@ -6,6 +6,7 @@ from ui.navigation import (
     CONFIGURACION,
     PRODUCTOS_LISTOS,
     OPORTUNIDAD_CONTROLADA,
+    INVESTIGACION,
     RESULTADOS,
     VISTA_PREVIA,
     ir_a,
@@ -18,6 +19,8 @@ class NavigationTests(unittest.TestCase):
 
         self.assertTrue(ir_a(estado, CARGA))
         self.assertTrue(ir_a(estado, OPORTUNIDAD_CONTROLADA))
+        estado["research_workspace"] = {"workspace_id": "workspace"}
+        self.assertTrue(ir_a(estado, INVESTIGACION))
         estado["productos"] = [{"nombre": "Producto"}]
         self.assertTrue(ir_a(estado, VISTA_PREVIA))
         estado["importacion_confirmada"] = True
@@ -46,6 +49,11 @@ class NavigationTests(unittest.TestCase):
         estado = {"pantalla_actual": CARGA}
 
         self.assertFalse(ir_a(estado, "pantalla_inventada"))
+        self.assertEqual(estado["pantalla_actual"], BIENVENIDA)
+
+    def test_impide_investigacion_sin_workspace(self):
+        estado = {"pantalla_actual": BIENVENIDA, "research_workspace": None}
+        self.assertFalse(ir_a(estado, INVESTIGACION))
         self.assertEqual(estado["pantalla_actual"], BIENVENIDA)
 
 

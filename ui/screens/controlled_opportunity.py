@@ -5,10 +5,11 @@ from application.controlled_opportunity_service import (
     estado_conexion_ebay,
 )
 from application.opportunity_dossier_service import crear_expediente_oportunidad
+from application.research_workspace_service import crear_research_workspace
 from ui.components.controlled_opportunity import mostrar_analisis_controlado
 from ui.components.opportunity_dossier import mostrar_expediente
 from ui.components.messages import mostrar_mensajes
-from ui.navigation import BIENVENIDA, ir_a
+from ui.navigation import BIENVENIDA, INVESTIGACION, ir_a
 
 
 def _campo_costos(st):
@@ -85,11 +86,15 @@ def renderizar(st, estado):
             estado["expediente_oportunidad"] = crear_expediente_oportunidad(
                 respuesta["datos"]
             )
+            estado["research_workspace"] = crear_research_workspace(
+                estado["expediente_oportunidad"]
+            )
             estado["oportunidad_advertencias"] = respuesta["advertencias"]
             estado["oportunidad_errores"] = []
         else:
             estado["oportunidad_controlada"] = None
             estado["expediente_oportunidad"] = None
+            estado["research_workspace"] = None
             estado["oportunidad_advertencias"] = []
             estado["oportunidad_errores"] = [
                 error["mensaje"] for error in respuesta["errores"]
@@ -104,6 +109,9 @@ def renderizar(st, estado):
         mostrar_analisis_controlado(st, estado["oportunidad_controlada"])
     if estado.get("expediente_oportunidad"):
         mostrar_expediente(st, estado["expediente_oportunidad"])
+        if st.button("Continuar a investigación", type="primary"):
+            ir_a(estado, INVESTIGACION)
+            st.rerun()
 
     if st.button("← Volver al inicio"):
         ir_a(estado, BIENVENIDA)

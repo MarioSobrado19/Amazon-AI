@@ -59,6 +59,12 @@ observados, supuestos declarados y datos todavía desconocidos. El expediente
 conserva los escenarios financieros y explica el siguiente paso de investigación,
 pero nunca autoriza automáticamente una compra o inversión.
 
+El Research Workspace permite documentar demanda, proveedor, costos,
+restricciones, competencia, marketplace y logística. Mantiene separadas las
+observaciones, estimaciones y suposiciones; controla vigencia; conserva la fuente
+y deja bloqueada cualquier consideración de compra mientras falte evidencia
+documentada en las áreas esenciales.
+
 ## Configuración
 
 Los valores editables están en `config.json`:

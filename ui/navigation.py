@@ -8,6 +8,7 @@ PRODUCTOS_LISTOS = "productos_listos"
 CONFIGURACION = "configuracion"
 RESULTADOS = "resultados"
 OPORTUNIDAD_CONTROLADA = "oportunidad_controlada"
+INVESTIGACION = "investigacion"
 
 PANTALLAS = {
     BIENVENIDA,
@@ -17,6 +18,7 @@ PANTALLAS = {
     CONFIGURACION,
     RESULTADOS,
     OPORTUNIDAD_CONTROLADA,
+    INVESTIGACION,
 }
 
 
@@ -35,6 +37,8 @@ def puede_ir_a(estado, pantalla):
         )
     if pantalla == RESULTADOS:
         return estado.get("resultados") is not None
+    if pantalla == INVESTIGACION:
+        return estado.get("research_workspace") is not None
     return True
 
 

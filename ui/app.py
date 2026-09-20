@@ -16,6 +16,7 @@ from ui.navigation import (
     CONFIGURACION,
     PRODUCTOS_LISTOS,
     OPORTUNIDAD_CONTROLADA,
+    INVESTIGACION,
     RESULTADOS,
     VISTA_PREVIA,
     ir_a,
@@ -23,6 +24,7 @@ from ui.navigation import (
 from ui.screens import (
     configuration,
     controlled_opportunity,
+    research_workspace,
     preview,
     ready,
     results,
@@ -48,6 +50,7 @@ PANTALLAS = {
     CONFIGURACION: configuration.renderizar,
     RESULTADOS: results.renderizar,
     OPORTUNIDAD_CONTROLADA: controlled_opportunity.renderizar,
+    INVESTIGACION: research_workspace.renderizar,
 }
 
 pantalla = st.session_state["pantalla_actual"]

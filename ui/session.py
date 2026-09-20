@@ -22,6 +22,8 @@ ESTADO_INICIAL = {
     "total_analizado": 0,
     "oportunidad_controlada": None,
     "expediente_oportunidad": None,
+    "research_workspace": None,
+    "research_workspace_error": [],
     "oportunidad_advertencias": [],
     "oportunidad_errores": [],
 }
