@@ -1,1 +1,1 @@
-"""Pantallas del primer flujo visual."""
+"""Pantallas de la interfaz web de Oriva."""

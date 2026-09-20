@@ -7,6 +7,7 @@ VISTA_PREVIA = "vista_previa"
 PRODUCTOS_LISTOS = "productos_listos"
 CONFIGURACION = "configuracion"
 RESULTADOS = "resultados"
+OPORTUNIDAD_CONTROLADA = "oportunidad_controlada"
 
 PANTALLAS = {
     BIENVENIDA,
@@ -15,6 +16,7 @@ PANTALLAS = {
     PRODUCTOS_LISTOS,
     CONFIGURACION,
     RESULTADOS,
+    OPORTUNIDAD_CONTROLADA,
 }
 
 

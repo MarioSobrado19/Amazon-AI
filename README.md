@@ -42,6 +42,18 @@ La aplicación abrirá una dirección local en el navegador. El análisis, los
 filtros y los reportes seguirán disponibles desde `main.py` mientras se integran
 progresivamente en la interfaz.
 
+La pantalla inicial también permite analizar un producto identificado por GTIN
+contra listings activos de eBay Production cuando las credenciales y la
+aprobación están configuradas localmente. Ese flujo valida identidad y
+presentación, compara precios observables y calcula escenarios financieros por
+listing. No interpreta listings como ventas ni autoriza compras.
+
+Para habilitar ese recorrido, el entorno debe tener configuradas localmente
+`EBAY_CLIENT_ID`, `EBAY_CLIENT_SECRET`, `EBAY_ENVIRONMENT=production` y
+`EBAY_BUY_PRODUCTION_APPROVED=true`. Los secretos no se introducen en la UI ni
+se guardan en el repositorio. Si la conexión no está lista, la pantalla informa
+qué configuración falta y mantiene deshabilitada la consulta.
+
 ## Configuración
 
 Los valores editables están en `config.json`:

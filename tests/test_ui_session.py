@@ -18,6 +18,7 @@ class SessionTests(unittest.TestCase):
 
         self.assertEqual(estado["pantalla_actual"], "carga")
         self.assertEqual(estado["productos"], [])
+        self.assertIsNone(estado["oportunidad_controlada"])
 
     def test_guarda_y_confirma_importacion(self):
         estado = {}

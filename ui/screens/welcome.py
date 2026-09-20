@@ -1,13 +1,13 @@
 """Pantalla de bienvenida."""
 
-from ui.navigation import CARGA, ir_a
+from ui.navigation import CARGA, OPORTUNIDAD_CONTROLADA, ir_a
 from ui.view_models import PLANTILLA_CSV
 
 
 def renderizar(st, estado):
     st.markdown("<div style='height: 1.5rem'></div>", unsafe_allow_html=True)
     st.title("Encuentra productos con mayor potencial antes de invertir")
-    st.caption("AMAZON SCOUT AI")
+    st.caption("ORIVA")
     st.markdown("<div style='height: 0.75rem'></div>", unsafe_allow_html=True)
     st.subheader("Analiza cientos de productos en segundos")
     st.write(
@@ -38,6 +38,10 @@ def renderizar(st, estado):
         file_name="plantilla_productos.csv",
         mime="text/csv",
     )
-    if st.button("Cargar archivo CSV", type="primary"):
+    acciones = st.columns(2)
+    if acciones[0].button("Analizar archivo CSV", type="primary"):
         ir_a(estado, CARGA)
+        st.rerun()
+    if acciones[1].button("Analizar un producto en eBay"):
+        ir_a(estado, OPORTUNIDAD_CONTROLADA)
         st.rerun()

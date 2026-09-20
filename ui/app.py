@@ -15,16 +15,25 @@ from ui.navigation import (
     CARGA,
     CONFIGURACION,
     PRODUCTOS_LISTOS,
+    OPORTUNIDAD_CONTROLADA,
     RESULTADOS,
     VISTA_PREVIA,
     ir_a,
 )
-from ui.screens import configuration, preview, ready, results, upload, welcome
+from ui.screens import (
+    configuration,
+    controlled_opportunity,
+    preview,
+    ready,
+    results,
+    upload,
+    welcome,
+)
 from ui.session import inicializar_sesion
 
 
 st.set_page_config(
-    page_title="Amazon Scout AI",
+    page_title="Oriva",
     page_icon="🚀",
     layout="centered",
 )
@@ -38,6 +47,7 @@ PANTALLAS = {
     PRODUCTOS_LISTOS: ready.renderizar,
     CONFIGURACION: configuration.renderizar,
     RESULTADOS: results.renderizar,
+    OPORTUNIDAD_CONTROLADA: controlled_opportunity.renderizar,
 }
 
 pantalla = st.session_state["pantalla_actual"]

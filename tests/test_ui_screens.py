@@ -1,11 +1,27 @@
 import unittest
 
-from ui.screens import configuration, preview, ready, results, upload, welcome
+from ui.screens import (
+    configuration,
+    controlled_opportunity,
+    preview,
+    ready,
+    results,
+    upload,
+    welcome,
+)
 
 
 class ScreenImportTests(unittest.TestCase):
     def test_todas_las_pantallas_exponen_renderizar(self):
-        pantallas = (welcome, upload, preview, ready, configuration, results)
+        pantallas = (
+            welcome,
+            upload,
+            preview,
+            ready,
+            configuration,
+            results,
+            controlled_opportunity,
+        )
 
         for pantalla in pantallas:
             with self.subTest(pantalla=pantalla.__name__):

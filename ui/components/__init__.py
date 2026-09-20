@@ -1,1 +1,1 @@
-"""Componentes compartidos por las pantallas."""
+"""Componentes visuales reutilizables de Oriva."""

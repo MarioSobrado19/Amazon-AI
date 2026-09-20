@@ -5,6 +5,7 @@ from ui.navigation import (
     CARGA,
     CONFIGURACION,
     PRODUCTOS_LISTOS,
+    OPORTUNIDAD_CONTROLADA,
     RESULTADOS,
     VISTA_PREVIA,
     ir_a,
@@ -16,6 +17,7 @@ class NavigationTests(unittest.TestCase):
         estado = {"pantalla_actual": BIENVENIDA, "productos": []}
 
         self.assertTrue(ir_a(estado, CARGA))
+        self.assertTrue(ir_a(estado, OPORTUNIDAD_CONTROLADA))
         estado["productos"] = [{"nombre": "Producto"}]
         self.assertTrue(ir_a(estado, VISTA_PREVIA))
         estado["importacion_confirmada"] = True

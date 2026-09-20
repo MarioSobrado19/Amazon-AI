@@ -20,6 +20,9 @@ ESTADO_INICIAL = {
     "insights": None,
     "decision": None,
     "total_analizado": 0,
+    "oportunidad_controlada": None,
+    "oportunidad_advertencias": [],
+    "oportunidad_errores": [],
 }
 
 
