@@ -2,7 +2,11 @@
 .venv-ui/
 __pycache__/
 .env
+.env.*
+!.env.example
 .DS_Store
 .pytest_cache/
 reports/*.txt
 reports/*.csv
+work/*.sqlite3
+work/*.sqlite3-*

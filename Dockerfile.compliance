@@ -1,0 +1,17 @@
+FROM python:3.13-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+WORKDIR /app
+
+COPY requirements-compliance.txt ./
+RUN pip install --no-cache-dir -r requirements-compliance.txt
+
+COPY compliance ./compliance
+COPY infrastructure/__init__.py ./infrastructure/__init__.py
+COPY infrastructure/oauth_client.py ./infrastructure/oauth_client.py
+COPY infrastructure/ebay ./infrastructure/ebay
+COPY application ./application
+RUN chmod +x /app/compliance/start.sh
+
+EXPOSE 8080
+CMD ["/app/compliance/start.sh"]
