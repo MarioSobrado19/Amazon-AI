@@ -4,7 +4,9 @@ from application.controlled_opportunity_service import (
     analizar_oportunidad_controlada,
     estado_conexion_ebay,
 )
+from application.opportunity_dossier_service import crear_expediente_oportunidad
 from ui.components.controlled_opportunity import mostrar_analisis_controlado
+from ui.components.opportunity_dossier import mostrar_expediente
 from ui.components.messages import mostrar_mensajes
 from ui.navigation import BIENVENIDA, ir_a
 
@@ -80,10 +82,14 @@ def renderizar(st, estado):
             respuesta = analizar_oportunidad_controlada(gtin=gtin, **valores)
         if respuesta["exito"]:
             estado["oportunidad_controlada"] = respuesta["datos"]
+            estado["expediente_oportunidad"] = crear_expediente_oportunidad(
+                respuesta["datos"]
+            )
             estado["oportunidad_advertencias"] = respuesta["advertencias"]
             estado["oportunidad_errores"] = []
         else:
             estado["oportunidad_controlada"] = None
+            estado["expediente_oportunidad"] = None
             estado["oportunidad_advertencias"] = []
             estado["oportunidad_errores"] = [
                 error["mensaje"] for error in respuesta["errores"]
@@ -96,6 +102,8 @@ def renderizar(st, estado):
     )
     if estado.get("oportunidad_controlada"):
         mostrar_analisis_controlado(st, estado["oportunidad_controlada"])
+    if estado.get("expediente_oportunidad"):
+        mostrar_expediente(st, estado["expediente_oportunidad"])
 
     if st.button("← Volver al inicio"):
         ir_a(estado, BIENVENIDA)

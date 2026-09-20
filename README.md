@@ -54,6 +54,11 @@ Para habilitar ese recorrido, el entorno debe tener configuradas localmente
 se guardan en el repositorio. Si la conexión no está lista, la pantalla informa
 qué configuración falta y mantiene deshabilitada la consulta.
 
+Después del análisis, Oriva prepara un expediente descargable que separa datos
+observados, supuestos declarados y datos todavía desconocidos. El expediente
+conserva los escenarios financieros y explica el siguiente paso de investigación,
+pero nunca autoriza automáticamente una compra o inversión.
+
 ## Configuración
 
 Los valores editables están en `config.json`:

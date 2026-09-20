@@ -9,6 +9,7 @@ from ui.screens import (
     upload,
     welcome,
 )
+from ui.components.opportunity_dossier import mostrar_expediente
 
 
 class ScreenImportTests(unittest.TestCase):
@@ -26,6 +27,8 @@ class ScreenImportTests(unittest.TestCase):
         for pantalla in pantallas:
             with self.subTest(pantalla=pantalla.__name__):
                 self.assertTrue(callable(pantalla.renderizar))
+
+        self.assertTrue(callable(mostrar_expediente))
 
 
 if __name__ == "__main__":

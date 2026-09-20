@@ -21,6 +21,7 @@ ESTADO_INICIAL = {
     "decision": None,
     "total_analizado": 0,
     "oportunidad_controlada": None,
+    "expediente_oportunidad": None,
     "oportunidad_advertencias": [],
     "oportunidad_errores": [],
 }
