@@ -34,13 +34,16 @@ def _detail_gtin(detail):
     return None
 
 
-def run_ebay_production_pipeline(*, gtin, manual_cost, fee_assumptions, source=None, minimum_comparables=3):
+def run_ebay_production_pipeline(
+    *, gtin, fee_assumptions, manual_cost=None, supplier_product=None,
+    source=None, minimum_comparables=3
+):
     """Ejecuta el pipeline sin persistir datos ni inferir demanda o ventas."""
     gtin = _digits(gtin)
     if not gtin:
         raise ValueError("Se requiere un GTIN válido.")
-    if manual_cost is None or float(manual_cost) <= 0:
-        raise ValueError("El costo manual/controlado debe ser mayor que cero.")
+    if (manual_cost is None) == (supplier_product is None):
+        raise ValueError("Proporciona exactamente un costo manual o un producto de proveedor.")
     if not isinstance(fee_assumptions, EbayFeeAssumptions):
         raise TypeError("fee_assumptions debe ser EbayFeeAssumptions explícito.")
 
@@ -87,16 +90,32 @@ def run_ebay_production_pipeline(*, gtin, manual_cost, fee_assumptions, source=N
         if item["presentation_validation"]["accepted"] and not item.get("is_price_outlier")
     ]
 
-    supplier_input = {
-        "nombre": f"Controlled validation input {gtin}",
-        "gtin": gtin,
-        "costo": float(manual_cost),
-        "source": "manual_controlled_validation",
-        "evidence_status": "ASSUMPTION",
-        "limitations": [
-            "El costo es un input manual/controlado para validar el pipeline; no fue obtenido de un proveedor.",
-        ],
-    }
+    if supplier_product is None:
+        if float(manual_cost) <= 0:
+            raise ValueError("El costo manual/controlado debe ser mayor que cero.")
+        supplier_input = {
+            "nombre": f"Controlled validation input {gtin}",
+            "gtin": gtin,
+            "costo": float(manual_cost),
+            "source": "manual_controlled_validation",
+            "evidence_status": "ASSUMPTION",
+            "limitations": [
+                "El costo es un input manual/controlado para validar el pipeline; no fue obtenido de un proveedor.",
+            ],
+        }
+    else:
+        supplier_input = dict(supplier_product)
+        supplier_gtin = _digits(supplier_input.get("gtin"))
+        if supplier_gtin != gtin:
+            raise ValueError("El GTIN del proveedor no coincide con el GTIN solicitado.")
+        try:
+            supplier_cost = float(supplier_input.get("costo"))
+        except (TypeError, ValueError):
+            raise ValueError("El producto de proveedor no contiene un costo observable válido.") from None
+        if supplier_cost <= 0:
+            raise ValueError("El costo observado del proveedor debe ser mayor que cero.")
+        supplier_input["gtin"] = supplier_gtin
+        supplier_input["costo"] = supplier_cost
     scenarios = []
     for listing in comparable_listings:
         scenario = build_market_opportunities(
@@ -146,7 +165,11 @@ def run_ebay_production_pipeline(*, gtin, manual_cost, fee_assumptions, source=N
         "listing_details_rejected": rejected_details,
         "listing_detail_errors": detail_errors,
         "price_interpretation": "Precio anunciado de un listing activo observado; no es una venta confirmada.",
-        "cost_interpretation": "Costo manual/controlado de validación; no es un costo real de proveedor.",
+        "cost_interpretation": (
+            "Costo manual/controlado de validación; no es un costo real de proveedor."
+            if supplier_product is None else
+            "Costo observado en la fuente de proveedor indicada; depende de ubicación, fecha y disponibilidad."
+        ),
     }
     return result
 

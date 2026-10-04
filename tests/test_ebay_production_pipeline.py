@@ -115,6 +115,30 @@ class EbayProductionPipelineTests(unittest.TestCase):
                 source=FakeEbaySource({}),
             )
 
+    def test_acepta_costo_observado_de_proveedor_sin_reetiquetarlo_manual(self):
+        supplier = {
+            "nombre": "Exact product", "gtin": "629721670295", "costo": 8,
+            "source": "kroger_products_public", "source_environment": "production",
+            "evidence_status": "observed", "limitations": [],
+        }
+        result = run_ebay_production_pipeline(
+            gtin="629721670295", supplier_product=supplier,
+            fee_assumptions=self.fees,
+            source=FakeEbaySource({"gtin": "629721670295", "condition": "New"}),
+        )
+        self.assertEqual(result["supplier_product"]["source"], "kroger_products_public")
+        self.assertEqual(result["supplier_product"]["evidence_status"], "observed")
+        self.assertIn("Costo observado", result["pipeline_evidence"]["cost_interpretation"])
+
+    def test_rechaza_dos_fuentes_de_costo_simultaneas(self):
+        with self.assertRaises(ValueError):
+            run_ebay_production_pipeline(
+                gtin="629721670295", manual_cost=8,
+                supplier_product={"gtin": "629721670295", "costo": 8},
+                fee_assumptions=self.fees,
+                source=FakeEbaySource({}),
+            )
+
     def test_submodulo_no_carga_dependencias_del_legado(self):
         code = (
             "import application.ebay_production_pipeline, sys; "
@@ -128,6 +152,7 @@ class EbayProductionPipelineTests(unittest.TestCase):
         dockerfile = (root / "Dockerfile.compliance").read_text(encoding="utf-8")
         self.assertIn("COPY application ./application", dockerfile)
         self.assertIn("COPY domain ./domain", dockerfile)
+        self.assertIn("COPY infrastructure/kroger ./infrastructure/kroger", dockerfile)
 
     def test_presentacion_incompatible_se_rechaza(self):
         result = run_ebay_production_pipeline(
