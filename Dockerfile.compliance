@@ -11,6 +11,7 @@ COPY infrastructure/__init__.py ./infrastructure/__init__.py
 COPY infrastructure/oauth_client.py ./infrastructure/oauth_client.py
 COPY infrastructure/ebay ./infrastructure/ebay
 COPY application ./application
+COPY domain ./domain
 RUN chmod +x /app/compliance/start.sh
 
 EXPOSE 8080
